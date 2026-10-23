@@ -1,8 +1,6 @@
 {
   "fr": {
-    "dashboard_title": "Data Storytelling: Election présidentielle 2022 1er tour",
-    "": "",
-
+    "dashboard_title": "Data Storytelling : Election présidentielle 2022 1er tour",
     "pages": [
       "Accueil",
       "Histoire du dataset",
@@ -10,55 +8,26 @@
       "Analyse interactive",
       "Qualité et méthodes"
     ],
-    "home_title": "Des données publiques à une histoire électorale",
+    "home_title": "Accueil - Consignes",
+    "home_subtitle": "Des données à une histoire qui compte",
+    "dashboard_subtitle": "Des données publiques à une histoire électorale",
     "intro": "Projet individuel EFREI : construire une application Streamlit qui raconte une histoire défendable, du problème aux implications.",
     "status": "Dataset choisi : résultats définitifs du premier tour de la présidentielle 2022, par département. Charge le fichier TXT complet pour commencer.",
     "brief_title": "Les consignes du projet",
-    "brief": [
-      "Récit : accroche, contexte, analyse, enseignements et implications ; identifier un public et une question précise.",
-      "Choisir un dataset ou un petit ensemble cohérent issu d’un même portail autorisé : data.gouv.fr, GD4H ou data.europa.eu.",
-      "Streamlit ≥ 1.33 ; filtres latéraux et bandeau de KPI liés aux filtres.",
-      "Au moins 3 visuels interactifs avec infobulles ; une carte si des champs géographiques existent, sinon petits multiples.",
-      "Documenter valeurs manquantes, doublons, contrôles, hypothèses, biais, incertitudes et limites.",
-      "Utiliser st.cache_data, optimiser les jointures et agrégations ; code modulaire et environnement déterministe.",
-      "Accessibilité : contrastes lisibles, unités et axes explicites, textes alternatifs pertinents.",
-      "Respecter les licences et la vie privée ; ne pas confondre corrélation et causalité."
-    ],
     "rubric_title": "Barème sur 100 points",
-    "rubric": [
-      {
-        "criterion": "Narration et problématique",
-        "points": 25
-      },
-      {
-        "criterion": "Travail sur les données",
-        "points": 25
-      },
-      {
-        "criterion": "Visualisation et UX",
-        "points": 25
-      },
-      {
-        "criterion": "Qualité de l’ingénierie",
-        "points": 15
-      },
-      {
-        "criterion": "Communication",
-        "points": 10
-      }
-    ],
     "deliverables_title": "Livrables",
     "deliverables": [
-      "Application déployable et URL après validation.",
-      "Vidéo de démonstration de 2–4 minutes.",
-      "ZIP : dataset ou lien, README et code Python. Exemple DAI : StApp26_20000_NOM_DAI.zip.",
-      "Dépôt avec code et rapport ; storyboard et lien vidéo.",
-      "Dépendances figées et testées depuis une copie propre ; instructions de lancement ; script de téléchargement si nécessaire et graines fixes si échantillonnage."
+      "Application Streamlit déployable avec récit cohérent et interactions.",
+      "Vidéo de démonstration de 2 à 4 minutes : histoire et interactions.",
+      "Archive ZIP contenant le dataset ou son lien, le README et le code Python.",
+      "URL de l’application déployée après validation.",
+      "Lien du dépôt avec code et rapport.",
+      "Storyboard et lien de la vidéo."
     ],
     "upload": "Charger le TXT départemental (séparateur point-virgule)",
-    "waiting": "Charge le fichier complet depuis la barre latérale. Aucun extrait n’est chargé automatiquement.",
+    "custom_file_info": "Vous pouvez charger votre propre fichier depuis la barre latérale. Fichier par défaut chargé automatiquement.",
     "story_title": "Un scrutin national, des contrastes départementaux",
-    "question": "Question directrice : comment la participation et la répartition des suffrages diffèrent-elles entre départements au premier tour de 2022 ?",
+    "my_question": "Question directrice : comment la participation et la répartition des suffrages diffèrent-elles entre départements au premier tour de 2022 ?",
     "audience": "Public : lecteurs souhaitant comprendre les contrastes territoriaux du scrutin, sans inférer les comportements individuels.",
     "story": [
       "Contexte : un seul scrutin et un seul tour. Ce fichier ne permet pas d’étudier une évolution temporelle.",
@@ -109,27 +78,44 @@
     "quality_bad": "Anomalies détectées : les calculs descriptifs restent affichés, mais doivent être interprétés avec prudence.",
     "geo": "Carte non encore intégrée : les codes départementaux sont présents, mais aucun fond géographique n’est fourni. Une géométrie compatible avec la couverture réelle (Corse, outre-mer, éventuels territoires particuliers) devra être ajoutée pour satisfaire l’exigence cartographique finale.",
     "conclusions": "Lecture : ces visuels décrivent uniquement les territoires sélectionnés. Aucun résultat ne permet d’expliquer à lui seul les causes des écarts.",
-    "footer": "Référence : consignes EFREI, Individual Student Project : Streamlit Dashboard, Mano Joseph Mathew, 6 pages. Le PDF reste la référence.",
     "error": "Le fichier ne peut pas être analysé",
     "rows": "Territoires chargés",
     "encoding": "Encodage détecté",
     "missing": "Valeurs absentes (tables normalisées)",
-    "quality_details": "Détail des contrôles"
+
+    "quality_details": "Détail des contrôles",
+    "unload_dataset": "Décharger le dataset",
+    "unload_dataset_help": "Supprimer le fichier personnalisé de la session et revenir au dataset par défaut.",
+    "default_dataset": "Dataset par défaut",
+    "custom_dataset": "Dataset personnalisé",
+    "default_file_error": "Impossible de lire le fichier par défaut",
+    "invalid_custom_dataset": "Le fichier personnalisé est invalide. Clique sur « Décharger le dataset » dans la barre latérale pour revenir au fichier par défaut, ou charge un autre fichier.",
+    "invalid_default_dataset": "Le fichier par défaut est invalide. Corrige-le ou charge un fichier personnalisé valide.",
+
+    "tabs": ["Le projet", "Exigences", "Évaluation", "Livrables"],
+    "question": "Une question précise, un public identifié, un récit défendable.",
+    "project": "L’objectif n’est pas d’accumuler des graphiques. Chaque métrique, filtre et visualisation doit répondre à une question et contribuer à la compréhension du sujet.",
+    "arc": [
+      ["01 - Accroche et contexte", "Pourquoi le sujet importe-t-il ? Pour qui ? Définir le périmètre, la source et la question."],
+      ["02 - Exploration et analyse", "Nettoyer, valider et comparer les données ; explorer les évolutions, catégories et territoires pertinents."],
+      ["03 - Enseignements", "Mettre en évidence les observations étayées, avec annotations, unités et limites."],
+      ["04 - Implications", "Expliquer ce que les résultats permettent de conclure, les pistes d’action et les questions ouvertes."]],
+    "portals": "Portails autorisés",
+    "source_rule": "Choisir un dataset ou un petit ensemble cohérent provenant d’une même source.",
+    "selection": "Avant de choisir le dataset",
+    "selection_items": ["Question concrète et public cible clairement définis.", "Granularité suffisante : temps, territoire ou catégories.", "Schéma, dictionnaire des variables et unités compréhensibles.", "Licence compatible avec la réutilisation académique et attribution prévue.", "Volume gérable localement, ou stratégie documentée de téléchargement et de cache."],
+    "patterns": "Formes possibles du récit",
+    "pattern_text": "Évolution avant/après ; comparaison de régions ou de groupes ; classements et distributions ; flux si les données le permettent ; scénarios avec hypothèses explicites.",
+    "req_title": "Le dashboard final devra réunir ces éléments.",
+    "req_groups": [["Interface et visualisations", ["Streamlit ≥ 1.33.", "Filtres dans la barre latérale : dates, régions ou variables selon les données.", "Au moins 3 visualisations interactives avec survol / infobulles.", "Au moins une carte si des champs géographiques existent ; sinon, des petits multiples.", "Un bandeau de KPI recalculés en fonction des filtres."]],
+      ["Données et méthodes", ["Section qualité : valeurs manquantes, doublons et contrôles de validation.", "Nettoyage, hypothèses, transformations et éventuelles jointures documentés.", "Méthodes de collecte, échantillonnage, biais et incertitudes explicités.", "Ne pas présenter une corrélation comme une preuve de causalité."]],
+      ["Ingénierie et accessibilité", ["Utiliser st.cache_data pour les chargements et traitements appropriés ; optimiser jointures et agrégations.", "Code modulaire, environnement déterministe et exécution depuis une copie propre.", "Dépendances figées ; README et commandes de lancement.", "Contrastes lisibles, axes et unités explicites, textes alternatifs pertinents.", "Interactions utiles, titres informatifs et annotations ; préférer les petits multiples aux légendes surchargées."]], ["Éthique et licences", ["Citer les sources et respecter les licences, qui peuvent différer entre code et données.", "Agréger les données concernant des personnes et éviter les risques de réidentification.", "Documenter les limites plutôt que surinterpréter les résultats."]]],
+    "naming": "Nom de fichier : StApp26_20000_NOM_DAI.zip",
+    "packaging": "Figer les dépendances, tester dans un environnement propre et fournir des instructions simples. Pour des fichiers volumineux, préférer un script de téléchargement avec cache. Si un échantillonnage est utilisé, fixer les graines ou constantes.",
+    "footer": "Référence : consignes « Individual Student Project : Streamlit Dashboard », Mano Joseph Mathew, EFREI, 6 pages. Cette page est une synthèse ; le PDF reste la référence.",
+    "links": "Sources et documentation",
+    "rubric": [["Narration et problématique", 25, "Public, questions, messages clés et cohérence du storyboard."], ["Travail sur les données", 25, "Sources, nettoyage, validation et construction de variables."], ["Visualisation et UX", 25, "Graphiques adaptés, annotations, légendes, couleurs et interactions."], ["Qualité de l’ingénierie", 15, "Structure, cache, performance, reproductibilité et documentation."], ["Communication", 10, "Clarté du rapport, démonstration et transparence des limites."]]
   },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -148,7 +134,6 @@
 
   "en": {
     "dashboard_title": "Data Storytelling: French Presidential Election 2022, 1st round",
-
     "pages": [
       "Home",
       "Dataset story",
@@ -156,55 +141,26 @@
       "Interactive analysis",
       "Quality and methods"
     ],
-    "home_title": "From public data to an electoral story",
+    "home_title": "Home - Project brief",
+    "home_subtitle": "From data to a story that matters",
+    "dashboard_subtitle": "From public data to an electoral story",
     "intro": "EFREI individual project: build a Streamlit application that tells a defensible story, from a question to its implications.",
     "status": "Selected dataset: definitive first-round results of the 2022 presidential election, by department. Upload the full TXT file to begin.",
-    "brief_title": "Project requirements",
-    "brief": [
-      "Narrative: hook, context, analysis, insights and implications; identify an audience and a focused question.",
-      "Select one dataset or a coherent small bundle from one approved portal: data.gouv.fr, GD4H or data.europa.eu.",
-      "Streamlit ≥ 1.33; sidebar filters and a KPI header connected to those filters.",
-      "At least 3 interactive visuals with tooltips; a map when geographic fields exist, otherwise small multiples.",
-      "Document missingness, duplicates, checks, assumptions, biases, uncertainty and limitations.",
-      "Use st.cache_data, efficient joins and aggregations; modular code and a deterministic environment.",
-      "Accessibility: readable contrast, explicit axes and units, meaningful alternative text.",
-      "Respect licenses and privacy; do not confuse correlation with causation."
-    ],
+    "brief_title": "Project brief/requirements",
     "rubric_title": "Assessment out of 100",
-    "rubric": [
-      {
-        "criterion": "Narrative and framing",
-        "points": 25
-      },
-      {
-        "criterion": "Data work",
-        "points": 25
-      },
-      {
-        "criterion": "Visualization and UX",
-        "points": 25
-      },
-      {
-        "criterion": "Engineering quality",
-        "points": 15
-      },
-      {
-        "criterion": "Communication",
-        "points": 10
-      }
-    ],
     "deliverables_title": "Deliverables",
     "deliverables": [
-      "Deployable app and URL after validation.",
-      "2–4 minute demo video.",
-      "ZIP: dataset or link, README and Python code. DAI example: StApp26_20000_NOM_DAI.zip.",
-      "Repository with code and report; storyboard and video link.",
-      "Pinned dependencies tested from a clean checkout; run instructions; download script if needed and fixed seeds for sampling."
+      "Deployable Streamlit application with a coherent story and interactions.",
+      "A 2–4 minute demo video showing the narrative and interactions.",
+      "ZIP archive with the dataset or its link, README and Python code.",
+      "Deployed application URL after validation.",
+      "Repository link with code and report.",
+      "Storyboard and demo video link."
     ],
     "upload": "Upload the department TXT file (semicolon-delimited)",
-    "waiting": "Upload the full file in the sidebar. No sample is loaded automatically.",
+    "custom_file_info": "You can upload a custom file in the sidebar. Default file is loaded automatically.",
     "story_title": "One national election, contrasting departments",
-    "question": "Main question: how do turnout and candidate vote shares differ across departments in the first round of 2022?",
+    "my_question": "Main question: how do turnout and candidate vote shares differ across departments in the first round of 2022?",
     "audience": "Audience: readers seeking to understand territorial contrasts without inferring individual behavior.",
     "story": [
       "Context: one election and one round. This file cannot support time-trend analysis.",
@@ -255,11 +211,40 @@
     "quality_bad": "Anomalies detected: descriptive calculations remain visible but require caution.",
     "geo": "Map not yet integrated: department codes exist but no geographic boundaries were supplied. Geometry compatible with actual coverage (Corsica, overseas and any special territories) must be added to meet the final mapping requirement.",
     "conclusions": "Interpretation: these visuals describe only the selected territories. They do not establish the causes of differences.",
-    "footer": "Reference: EFREI project brief, Individual Student Project : Streamlit Dashboard, Mano Joseph Mathew, 6 pages. The PDF remains authoritative.",
     "error": "Unable to parse the file",
     "rows": "Territories loaded",
     "encoding": "Detected encoding",
     "missing": "Missing values (normalized tables)",
-    "quality_details": "Validation details"
+
+    "quality_details": "Validation details",
+    "unload_dataset": "Unload dataset",
+    "unload_dataset_help": "Remove the custom file from this session and return to the default dataset.",
+    "default_dataset": "Default dataset",
+    "custom_dataset": "Custom dataset",
+    "default_file_error": "Unable to read the default file",
+    "invalid_custom_dataset": "The custom file is invalid. Click “Unload dataset” in the sidebar to return to the default file, or upload another file.",
+    "invalid_default_dataset": "The default file is invalid. Fix it or upload a valid custom file.",
+
+    "tabs": ["Project", "Requirements", "Assessment", "Deliverables"],
+    "question": "A focused question, a clear audience and a defensible story.",
+    "project": "The goal is not to collect charts. Every metric, filter and visualization should answer a specific question and help explain the topic.",
+    "arc": [
+      ["01 - Hook and context", "Why does this matter, and to whom? Define the scope, source and question."],
+      ["02 - Exploration and analysis", "Clean, validate and compare data; explore relevant time, category and geographic dimensions."],
+      ["03 - Insights", "Highlight supported observations with annotations, units and limitations."],
+      ["04 - Implications", "Explain what the findings support, possible actions and remaining questions."]],
+    "portals": "Approved portals",
+    "source_rule": "Choose one dataset or a small, coherent bundle from a single source.",
+    "selection": "Dataset selection checklist",
+    "selection_items": ["A concrete question and a clear audience.", "Enough granularity: time, geography or categories.", "Understandable schema, data dictionary and units.", "License compatible with academic reuse and proper attribution.", "Manageable local size or a documented download and caching strategy."],
+    "patterns": "Possible narrative patterns",
+    "pattern_text": "Before/after trends; regional or group comparisons; rankings and distributions; flows when supported by data; what-if scenarios with explicit assumptions.",
+    "req_title": "The final dashboard must include these elements.",
+    "req_groups": [["Interface and visuals", ["Streamlit ≥ 1.33.", "Sidebar controls for dates, regions or variables as appropriate.", "At least 3 interactive visuals with hover information / tooltips.", "At least one map if geographic fields exist; otherwise small multiples.", "A KPI header that updates with the filters."]], ["Data and methods", ["A quality section covering missingness, duplicates and validation checks.", "Document cleaning, assumptions, transformations and any joins.", "Explain collection methods, sampling, biases and uncertainty.", "Do not present correlation as proof of causation."]], ["Engineering and accessibility", ["Use st.cache_data for appropriate loading and processing; optimize joins and aggregations.", "Modular code, deterministic environment and execution from a clean checkout.", "Pinned dependencies, README and run instructions.", "Readable contrast, explicit axes and units, meaningful alternative text.", "Purposeful interactions, informative titles and annotations; prefer small multiples to crowded legends."]], ["Ethics and licenses", ["Cite sources and respect licenses; data and code may use different licenses.", "Aggregate people-related data and avoid re-identification risks.", "Document limitations rather than overclaiming."]]],
+    "naming": "File name: StApp26_20000_NOM_DAI.zip",
+    "packaging": "Pin dependencies, test in a clean environment and provide simple run instructions. For large raw files, prefer a download script with caching. Fix seeds or constants if sampling is used.",
+    "footer": "Reference: “Individual Student Project : Streamlit Dashboard”, Mano Joseph Mathew, EFREI, 6 pages. This page is a summary; the PDF remains authoritative.",
+    "links": "Sources and documentation",
+    "rubric": [["Narrative and problem framing", 25, "Audience, questions, takeaways and storyboard alignment."], ["Data work", 25, "Sourcing, cleaning, validation and feature engineering."], ["Visualization and UX", 25, "Appropriate charts, annotations, legends, colors and interactions."], ["Engineering quality", 15, "Structure, caching, performance, reproducibility and documentation."], ["Communication", 10, "Report clarity, effective demo and transparent limitations."]]
   }
 }

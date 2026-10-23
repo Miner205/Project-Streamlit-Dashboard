@@ -21,7 +21,7 @@ Dans la barre latérale, charger le TXT départemental complet. Le calcul est lo
 
 
 ## requirements :
-Python 3.13 Conda
+Python 3.13 (Conda used)
 
 ## To run the web app :
 - In pycharm terminal, run the command "streamlit run app/Accueil_-_Home.py" in the project folder.
@@ -55,7 +55,7 @@ Les anomalies comptables sont signalées sans bloquer les vues ; les erreurs str
 
 ## Langues
 
-L’application importe `from language_detection import detect_browser_language` et appelle le composant sans argument à chaque exécution. Un retour initial vide utilise temporairement le français. Les locales fr-* et en-* sont normalisées ; les autres langues utilisent le français. Le sélecteur manuel est prioritaire. La checklist reste en mémoire de session uniquement.
+L’application importe `from language_detection import detect_browser_language` et appelle le composant sans argument à chaque exécution. Un retour initial vide utilise temporairement l'anglais. Les locales fr-* et en-* sont normalisées. Le sélecteur manuel est prioritaire.
 
 Le composant tiers nécessite une validation dans un vrai navigateur : accès au navigateur, rendu de son iframe et retour asynchrone. Une exception de détection produit un avertissement et laisse le sélecteur utilisable. Une dépendance absente fait échouer le démarrage : installer requirements.txt au préalable.
 
@@ -91,7 +91,11 @@ Livrables finaux : app, ZIP dataset/lien + README + Python, vidéo 2–4 min, UR
 
 ## Références
 
-- Consignes : Individual Student Project : Streamlit Dashboard, Mano Joseph Mathew, EFREI, 6 pages (PDF fourni par l’utilisateur ; non redistribué).
+- Consignes : Individual Student Project : Streamlit Dashboard, Project proposed by Mano Joseph Mathew, EFREI, PDF des consignes.
 - https://docs.streamlit.io/
 - https://github.com/louisoutin/streamlit-browser-language
 - Portails autorisés : https://www.data.gouv.fr/datasets ; https://gd4h.ecologie.gouv.fr/en/catalogue ; https://data.europa.eu/data/combined?locale=en
+
+## Data
+- source of the used dataset : https://www.data.gouv.fr/datasets/election-presidentielle-des-10-et-24-avril-2022-resultats-definitifs-du-1er-tour
+- cf dataset info on the streamlit app.
