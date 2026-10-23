@@ -1,0 +1,265 @@
+{
+  "fr": {
+    "dashboard_title": "Data Storytelling: Election présidentielle 2022 1er tour",
+    "": "",
+
+    "pages": [
+      "Accueil",
+      "Histoire du dataset",
+      "Exploration - EDA",
+      "Analyse interactive",
+      "Qualité et méthodes"
+    ],
+    "home_title": "Des données publiques à une histoire électorale",
+    "intro": "Projet individuel EFREI : construire une application Streamlit qui raconte une histoire défendable, du problème aux implications.",
+    "status": "Dataset choisi : résultats définitifs du premier tour de la présidentielle 2022, par département. Charge le fichier TXT complet pour commencer.",
+    "brief_title": "Les consignes du projet",
+    "brief": [
+      "Récit : accroche, contexte, analyse, enseignements et implications ; identifier un public et une question précise.",
+      "Choisir un dataset ou un petit ensemble cohérent issu d’un même portail autorisé : data.gouv.fr, GD4H ou data.europa.eu.",
+      "Streamlit ≥ 1.33 ; filtres latéraux et bandeau de KPI liés aux filtres.",
+      "Au moins 3 visuels interactifs avec infobulles ; une carte si des champs géographiques existent, sinon petits multiples.",
+      "Documenter valeurs manquantes, doublons, contrôles, hypothèses, biais, incertitudes et limites.",
+      "Utiliser st.cache_data, optimiser les jointures et agrégations ; code modulaire et environnement déterministe.",
+      "Accessibilité : contrastes lisibles, unités et axes explicites, textes alternatifs pertinents.",
+      "Respecter les licences et la vie privée ; ne pas confondre corrélation et causalité."
+    ],
+    "rubric_title": "Barème sur 100 points",
+    "rubric": [
+      {
+        "criterion": "Narration et problématique",
+        "points": 25
+      },
+      {
+        "criterion": "Travail sur les données",
+        "points": 25
+      },
+      {
+        "criterion": "Visualisation et UX",
+        "points": 25
+      },
+      {
+        "criterion": "Qualité de l’ingénierie",
+        "points": 15
+      },
+      {
+        "criterion": "Communication",
+        "points": 10
+      }
+    ],
+    "deliverables_title": "Livrables",
+    "deliverables": [
+      "Application déployable et URL après validation.",
+      "Vidéo de démonstration de 2–4 minutes.",
+      "ZIP : dataset ou lien, README et code Python. Exemple DAI : StApp26_20000_NOM_DAI.zip.",
+      "Dépôt avec code et rapport ; storyboard et lien vidéo.",
+      "Dépendances figées et testées depuis une copie propre ; instructions de lancement ; script de téléchargement si nécessaire et graines fixes si échantillonnage."
+    ],
+    "upload": "Charger le TXT départemental (séparateur point-virgule)",
+    "waiting": "Charge le fichier complet depuis la barre latérale. Aucun extrait n’est chargé automatiquement.",
+    "story_title": "Un scrutin national, des contrastes départementaux",
+    "question": "Question directrice : comment la participation et la répartition des suffrages diffèrent-elles entre départements au premier tour de 2022 ?",
+    "audience": "Public : lecteurs souhaitant comprendre les contrastes territoriaux du scrutin, sans inférer les comportements individuels.",
+    "story": [
+      "Contexte : un seul scrutin et un seul tour. Ce fichier ne permet pas d’étudier une évolution temporelle.",
+      "Explorer d’abord la participation, les bulletins blancs et nuls, puis les scores des candidats.",
+      "Comparer des taux pondérés par les effectifs, et distinguer les voix rapportées aux exprimés des voix rapportées aux inscrits.",
+      "Les différences territoriales sont descriptives : aucune causalité démographique, sociale ou politique n’est établie ici."
+    ],
+    "source": "Source officielle",
+    "license": "La fiche du portail affiche « License Not Specified » : licence de la ressource à clarifier avant redistribution. Ne pas assimiler la licence du site à celle du dataset.",
+    "filters": "Filtres",
+    "departments": "Départements",
+    "candidates": "Candidats",
+    "empty": "Sélectionne au moins un département et un candidat.",
+    "selected": "Périmètre sélectionné uniquement — ne pas interpréter comme un total national sans vérifier la couverture.",
+    "kpis": [
+      "Inscrits",
+      "Participation",
+      "Suffrages exprimés"
+    ],
+    "eda_title": "Comprendre le périmètre avant de comparer",
+    "tables": [
+      "Participation par territoire",
+      "Résultats par candidat"
+    ],
+    "analysis_title": "Comparer les territoires et les candidats",
+    "score": "Score (% des exprimés)",
+    "turnout": "Participation (%)",
+    "candidate": "Candidat",
+    "department": "Département",
+    "votes": "Voix",
+    "gap": "Écart 1er–2e (points)",
+    "charts": [
+      "La participation varie selon les départements sélectionnés",
+      "Les scores agrégés dépendent des territoires sélectionnés",
+      "Le classement territorial révèle des profils différents"
+    ],
+    "quality_title": "Une structure atypique, des contrôles explicites",
+    "quality_intro": "17 champs territoriaux, puis des blocs répétés de 6 champs par candidat. Les codes départementaux sont conservés comme texte ; les décimales françaises sont converties.",
+    "quality_checks": [
+      "Inscrits = abstentions + votants",
+      "Votants = blancs + nuls + exprimés",
+      "Somme des voix des candidats = exprimés",
+      "Codes départementaux uniques",
+      "Même liste de candidats dans chaque territoire",
+      "Pourcentages publiés cohérents avec les effectifs (tolérance de 0,02 point)"
+    ],
+    "quality_ok": "Aucune anomalie détectée par les contrôles implémentés. Cela ne certifie pas la couverture nationale ni l’absence de toute erreur.",
+    "quality_bad": "Anomalies détectées : les calculs descriptifs restent affichés, mais doivent être interprétés avec prudence.",
+    "geo": "Carte non encore intégrée : les codes départementaux sont présents, mais aucun fond géographique n’est fourni. Une géométrie compatible avec la couverture réelle (Corse, outre-mer, éventuels territoires particuliers) devra être ajoutée pour satisfaire l’exigence cartographique finale.",
+    "conclusions": "Lecture : ces visuels décrivent uniquement les territoires sélectionnés. Aucun résultat ne permet d’expliquer à lui seul les causes des écarts.",
+    "footer": "Référence : consignes EFREI, Individual Student Project : Streamlit Dashboard, Mano Joseph Mathew, 6 pages. Le PDF reste la référence.",
+    "error": "Le fichier ne peut pas être analysé",
+    "rows": "Territoires chargés",
+    "encoding": "Encodage détecté",
+    "missing": "Valeurs absentes (tables normalisées)",
+    "quality_details": "Détail des contrôles"
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  "en": {
+    "dashboard_title": "Data Storytelling: French Presidential Election 2022, 1st round",
+
+    "pages": [
+      "Home",
+      "Dataset story",
+      "Exploration - EDA",
+      "Interactive analysis",
+      "Quality and methods"
+    ],
+    "home_title": "From public data to an electoral story",
+    "intro": "EFREI individual project: build a Streamlit application that tells a defensible story, from a question to its implications.",
+    "status": "Selected dataset: definitive first-round results of the 2022 presidential election, by department. Upload the full TXT file to begin.",
+    "brief_title": "Project requirements",
+    "brief": [
+      "Narrative: hook, context, analysis, insights and implications; identify an audience and a focused question.",
+      "Select one dataset or a coherent small bundle from one approved portal: data.gouv.fr, GD4H or data.europa.eu.",
+      "Streamlit ≥ 1.33; sidebar filters and a KPI header connected to those filters.",
+      "At least 3 interactive visuals with tooltips; a map when geographic fields exist, otherwise small multiples.",
+      "Document missingness, duplicates, checks, assumptions, biases, uncertainty and limitations.",
+      "Use st.cache_data, efficient joins and aggregations; modular code and a deterministic environment.",
+      "Accessibility: readable contrast, explicit axes and units, meaningful alternative text.",
+      "Respect licenses and privacy; do not confuse correlation with causation."
+    ],
+    "rubric_title": "Assessment out of 100",
+    "rubric": [
+      {
+        "criterion": "Narrative and framing",
+        "points": 25
+      },
+      {
+        "criterion": "Data work",
+        "points": 25
+      },
+      {
+        "criterion": "Visualization and UX",
+        "points": 25
+      },
+      {
+        "criterion": "Engineering quality",
+        "points": 15
+      },
+      {
+        "criterion": "Communication",
+        "points": 10
+      }
+    ],
+    "deliverables_title": "Deliverables",
+    "deliverables": [
+      "Deployable app and URL after validation.",
+      "2–4 minute demo video.",
+      "ZIP: dataset or link, README and Python code. DAI example: StApp26_20000_NOM_DAI.zip.",
+      "Repository with code and report; storyboard and video link.",
+      "Pinned dependencies tested from a clean checkout; run instructions; download script if needed and fixed seeds for sampling."
+    ],
+    "upload": "Upload the department TXT file (semicolon-delimited)",
+    "waiting": "Upload the full file in the sidebar. No sample is loaded automatically.",
+    "story_title": "One national election, contrasting departments",
+    "question": "Main question: how do turnout and candidate vote shares differ across departments in the first round of 2022?",
+    "audience": "Audience: readers seeking to understand territorial contrasts without inferring individual behavior.",
+    "story": [
+      "Context: one election and one round. This file cannot support time-trend analysis.",
+      "Explore turnout, blank and invalid ballots, then candidate scores.",
+      "Compare count-weighted rates and distinguish shares of valid votes from shares of registered voters.",
+      "Territorial differences are descriptive: no demographic, social or political causation is established here."
+    ],
+    "source": "Official source",
+    "license": "The portal displays “License Not Specified”: clarify the resource license before redistribution. Do not assume the website license applies to this dataset.",
+    "filters": "Filters",
+    "departments": "Departments",
+    "candidates": "Candidates",
+    "empty": "Select at least one department and one candidate.",
+    "selected": "Selected scope only — do not interpret as a national total without checking coverage.",
+    "kpis": [
+      "Registered voters",
+      "Turnout",
+      "Valid votes"
+    ],
+    "eda_title": "Understand coverage before comparing",
+    "tables": [
+      "Participation by territory",
+      "Candidate results"
+    ],
+    "analysis_title": "Compare territories and candidates",
+    "score": "Share (% of valid votes)",
+    "turnout": "Turnout (%)",
+    "candidate": "Candidate",
+    "department": "Department",
+    "votes": "Votes",
+    "gap": "1st–2nd gap (points)",
+    "charts": [
+      "Turnout differs across selected departments",
+      "Aggregate vote shares depend on the selected territories",
+      "Territorial rankings reveal different profiles"
+    ],
+    "quality_title": "An unusual structure with explicit validation",
+    "quality_intro": "17 territorial fields followed by repeated 6-field candidate blocks. Department codes remain strings; French decimal numbers are converted.",
+    "quality_checks": [
+      "Registered = abstentions + voters",
+      "Voters = blank + invalid + valid ballots",
+      "Candidate vote sum = valid votes",
+      "Unique department codes",
+      "Same candidate roster in every territory",
+      "Published percentages match counts (0.02 percentage-point tolerance)"
+    ],
+    "quality_ok": "No anomalies detected by the implemented checks. This does not certify national coverage or the absence of all errors.",
+    "quality_bad": "Anomalies detected: descriptive calculations remain visible but require caution.",
+    "geo": "Map not yet integrated: department codes exist but no geographic boundaries were supplied. Geometry compatible with actual coverage (Corsica, overseas and any special territories) must be added to meet the final mapping requirement.",
+    "conclusions": "Interpretation: these visuals describe only the selected territories. They do not establish the causes of differences.",
+    "footer": "Reference: EFREI project brief, Individual Student Project : Streamlit Dashboard, Mano Joseph Mathew, 6 pages. The PDF remains authoritative.",
+    "error": "Unable to parse the file",
+    "rows": "Territories loaded",
+    "encoding": "Detected encoding",
+    "missing": "Missing values (normalized tables)",
+    "quality_details": "Validation details"
+  }
+}

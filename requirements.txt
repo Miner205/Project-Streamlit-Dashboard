@@ -1,0 +1,9 @@
+streamlit
+streamlit-browser-language
+pandas
+numpy
+pyarrow
+plotly
+altair
+geopandas  # if using maps
+pydeck      # optional map layer
