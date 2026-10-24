@@ -11,6 +11,18 @@ https://github.com/Miner205/Project-Streamlit-Dashboard
 # Deployed App link :
 https://project-app-dashboard-arthur.streamlit.app/
 
+# Link to used datasets :
+Election présidentielle des 10 et 24 avril 2022 - Résultats définitifs du 1er tour
+https://www.data.gouv.fr/datasets/election-presidentielle-des-10-et-24-avril-2022-resultats-definitifs-du-1er-tour
+Contours des départements français issus d'OpenStreetMap
+https://www.data.gouv.fr/datasets/contours-des-departements-francais-issus-d-openstreetmap
+
+# datasets to maybe lookup in the future :
+Election présidentielle 2012 - Résultats (par communes)
+https://www.data.gouv.fr/datasets/election-presidentielle-2012-resultats-572126
+Election présidentielle 2012 - Résultats (par régions, départements, circonscriptions législatives, cantons)
+https://www.data.gouv.fr/datasets/election-presidentielle-2012-resultats-572124
+
 
 ## Déploiement et remise finale
 
@@ -29,7 +41,6 @@ Navigation :
   - analyse interactive.
 
 Dans la barre latérale, charger le TXT départemental complet. Le calcul est local au processus Streamlit ; sur un hébergement distant, l’upload transfère le fichier au serveur. `st.cache_data` conserve les tables traitées en cache du processus : ne pas y envoyer de fichiers confidentiels.
-
 
 report : no real report provided, since there is already a lot of info in the README, App, Dashboard Story, Video, etc.
 
