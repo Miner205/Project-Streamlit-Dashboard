@@ -7,3 +7,4 @@ plotly
 altair
 geopandas # for maps
 pydeck      # optional map layer
+missingno

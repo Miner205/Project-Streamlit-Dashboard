@@ -163,3 +163,8 @@ territoires sans contours départementaux dans le shapefile (ZN, ZP, ZS, ZW, ZX,
 "ZW": "Wallis-et-Futuna",
 "ZX": "Saint-Martin / Saint-Barthélemy",
 "ZZ": "Français établis hors de France".
+
+
+## TODO // Limitations:
+- some translation in EN missing in dashboard quality.
+- etc.

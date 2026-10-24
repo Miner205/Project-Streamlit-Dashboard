@@ -117,7 +117,7 @@ with right:
     st.divider()
     st.write("Course: Data Analysis & Visualization")
     st.write("Teachers: DOUBLIER Sophie & MATHEW Mano Joseph")
-    st.markdown("Project Proposed by: [MATHEW Mano Joseph](mano.mathew@efrei.fr)")
+    st.write("Project Proposed by: MATHEW Mano Joseph, mano.mathew@efrei.fr")
 
 st.divider()
 

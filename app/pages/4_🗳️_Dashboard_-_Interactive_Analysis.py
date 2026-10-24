@@ -6,7 +6,8 @@ import streamlit as st
 from language_detection import detect_browser_language
 from utils.i18n import load_content, normalize_language
 from utils.parser import parse_results
-from utils.geo import department_map, filter_by_territory, load_departements_geo, show_geo_credit, territory_filter, NON_CARTOGRAPHIABLE
+from utils.geo import department_map, filter_by_territory, load_departements_geo, show_geo_credit, territory_filter
+
 
 
 SOURCE = "https://www.data.gouv.fr/datasets/election-presidentielle-des-10-et-24-avril-2022-resultats-definitifs-du-1er-tour"
@@ -183,7 +184,7 @@ c = all_c[all_c["candidate"].isin(chosen)].copy()
 registered=int(d["registered"].sum())
 voters=int(d["voters"].sum())
 valid=int(d["valid"].sum())
-st.title(t["eda_title"])
+st.title(t["analysis_title"])
 st.caption(t["selected"])
 if report["issues"]:
     st.warning(t["quality_bad"])
@@ -194,13 +195,12 @@ st.caption("Le filtre candidat ne change pas la participation ni le dénominateu
 d["turnout_pct"] = 100 * d["voters"].div(d["registered"].replace(0, float("nan")))
 
 
-st.subheader(t["tables"][0])
-st.dataframe(d, hide_index=True)
-st.subheader(t["tables"][1])
-st.dataframe(c, hide_index=True)
+labels={"department":t["department"],"candidate":t["candidate"],"votes":t["votes"],"turnout_pct":t["turnout"],"share":t["score"]}
 
-
-### geo
+## participation by dep ; bar chart.
+st.subheader(t["charts"][0])
+st.plotly_chart(px.bar(d.sort_values("turnout_pct"),x="turnout_pct",y="department",orientation="h",labels=labels,height=max(450,22*len(d))))
+# geo version:
 st.subheader(f"{t["map_turnout_title"]}")
 participation_map = department_map(t,
     geo,
@@ -214,135 +214,48 @@ if participation_map is not None:
     st.plotly_chart(participation_map)
     st.write(f"{t["map_turnout_help"]}")
 
+## scores
+agg=c.groupby("candidate",as_index=False)["votes"].sum()
+agg["share"]=100*agg["votes"]/valid if valid else float("nan")
+st.subheader(t["charts"][1])
+st.plotly_chart(px.bar(agg.sort_values("share"),x="share",y="candidate",orientation="h",hover_data=["votes"],labels=labels))
 
-### non cartographiable
-st.divider()
-st.subheader(t["non_cartographic_title"])
-st.write(t["non_cartographic_intro"])
-st.info(t["non_cartographic_warning"])
-
-non_cartographic_codes = list(NON_CARTOGRAPHIABLE.keys())
-
-nc_departments = departments[
-    departments["code"].astype(str).str.upper().isin(non_cartographic_codes)
-].copy()
-
-nc_candidates = candidates[
-    candidates["code"].astype(str).str.upper().isin(non_cartographic_codes)
-].copy()
-
-if nc_departments.empty:
-    st.info(t["map_no_data"])
-else:
-    nc_departments["turnout_pct"] = 100 * nc_departments["voters"].div(
-        nc_departments["registered"].replace(0, float("nan"))
-    )
-
-    registered = int(nc_departments["registered"].sum())
-    voters = int(nc_departments["voters"].sum())
-    valid = int(nc_departments["valid"].sum())
-
-    k1, k2, k3, k4 = st.columns(4)
-    k1.metric(t["non_cartographic_kpi_registered"], f"{registered:,}")
-    k2.metric(t["non_cartographic_kpi_voters"], f"{voters:,}")
-    k3.metric(
-        t["non_cartographic_kpi_turnout"],
-        f"{100 * voters / registered:.2f} %" if registered else "—",
-    )
-    k4.metric(t["non_cartographic_kpi_valid"], f"{valid:,}")
-
-    st.subheader(t["non_cartographic_table_title"])
-
-    territory_names = nc_departments["code"].map(NON_CARTOGRAPHIABLE)
-
-    nc_table = nc_departments[
-        ["code", "department", "registered", "voters", "valid", "turnout_pct"]
-    ].copy()
-    nc_table["territory"] = territory_names
-
-    st.dataframe(
-        nc_table.rename(
-            columns={
-                "code": "Code électoral",
-                "territory": "Territoire",
-                "department": "Libellé officiel",
-                "registered": "Inscrits",
-                "voters": "Votants",
-                "valid": "Suffrages exprimés",
-                "turnout_pct": "Participation (%)",
-            }
-        ),
-        use_container_width=True,
-        hide_index=True,
-    )
-
-    labels = {
-        "territory": t["territory_filter"],
-        "turnout_pct": t["turnout"],
-        "valid": t["votes"],
-    }
-
-    st.subheader(t["non_cartographic_turnout_title"])
-    st.plotly_chart(
-        px.bar(
-            nc_table.sort_values("turnout_pct"),
-            x="turnout_pct",
-            y="territory",
-            orientation="h",
-            labels=labels,
-            text="turnout_pct",
-        ).update_traces(texttemplate="%{text:.2f} %", textposition="outside"),
-        use_container_width=True,
-    )
-
-    st.subheader(t["non_cartographic_votes_title"])
-    st.plotly_chart(
-        px.bar(
-            nc_table.sort_values("valid"),
-            x="valid",
-            y="territory",
-            orientation="h",
-            labels=labels,
-            text="valid",
-        ).update_traces(texttemplate="%{text:,}", textposition="outside"),
-        use_container_width=True,
-    )
-
-    st.subheader(t["non_cartographic_candidate_title"])
-    st.caption(t["non_cartographic_candidate_help"])
-
+## scores matrix
+joined=c.merge(d[["code","valid"]],on="code",validate="many_to_one")
+joined["share"]=100*joined["votes"].div(joined["valid"].replace(0,float("nan")))
+st.subheader(t["charts"][2])
+matrix=joined.pivot(index="department",columns="candidate",values="share")
+fig=px.imshow(matrix,aspect="auto",color_continuous_scale="Blues",labels={"x":t["candidate"],"y":t["department"],"color":t["score"]},height=max(450,22*len(d)))
+fig.update_traces(hovertemplate="%{y}<br>%{x}<br>%{z:.2f} %<extra></extra>")
+st.plotly_chart(fig)
+# geo version:
+st.subheader(f"{t["map_candidate_title"]}")
+if len(chosen) == 1:
+    selected_candidate = chosen[0]
     candidate_scores = (
-        nc_candidates.merge(
-            nc_departments[["code", "valid"]],
-            on="code",
-            validate="many_to_one",
-        )
-    )
-    candidate_scores["share"] = 100 * candidate_scores["votes"].div(
-        candidate_scores["valid"].replace(0, float("nan"))
-    )
-
-    candidate_mean = (
-        candidate_scores
-        .groupby("candidate", as_index=False)["share"]
+        joined[joined["candidate"] == selected_candidate]
+        .groupby("code", as_index=False)["share"]
         .mean()
-        .sort_values("share", ascending=False)
     )
-
-    st.plotly_chart(
-        px.bar(
-            candidate_mean,
-            x="share",
-            y="candidate",
-            orientation="h",
-            labels={
-                "candidate": t["candidate"],
-                "share": t["score"],
-            },
-            text="share",
-        ).update_traces(texttemplate="%{text:.2f} %", textposition="outside"),
-        use_container_width=True,
+    candidate_map = department_map(t,
+        geo,
+        candidate_scores[["code", "share"]],
+        color_label=f"Score de {selected_candidate} (%)",
+        territory=territory,
+        color_scale="RdYlBu_r",
+        hover_data={"share": ":.2f"},
     )
+    if candidate_map is not None:
+        st.plotly_chart(candidate_map)
+    st.write(f"{t["map_candidate_help"]}")
+else:
+    st.warning(f"{t["map_candidate_help"]}")
 
 
+st.divider()
+
+st.info(t["conclusions"])
+
+
+### geo credits
 show_geo_credit(t)

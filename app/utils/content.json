@@ -81,7 +81,10 @@
     "error": "Le fichier ne peut pas être analysé",
     "rows": "Territoires chargés",
     "encoding": "Encodage détecté",
-    "missing": "Valeurs absentes (tables normalisées)",
+    "missings": ["Valeurs manquantes départements", "Valeurs manquantes candidats", "Valeurs manquantes total"],
+    "duplicates": ["Doublons départements", "Doublons candidats"],
+    "duplicates_help": ["Lignes entièrement dupliquées / codes départementaux dupliqués.",
+    "Lignes entièrement dupliquées / paires département-candidat dupliquées."],
 
     "quality_details": "Détail des contrôles",
     "unload_dataset": "Décharger le dataset",
@@ -171,7 +174,6 @@
     "non_cartographic_title": "Territoires non cartographiables - analyse spécifique",
     "non_cartographic_intro": "Ces circonscriptions ne peuvent pas être représentées sur les cartes départementales, mais elles représentent une part non négligeable de l’électorat et doivent rester incluses dans les analyses.",
     "non_cartographic_kpi_registered": "Inscrits",
-    "non_cartographic_kpi_voters": "Votants",
     "non_cartographic_kpi_turnout": "Participation",
     "non_cartographic_kpi_valid": "Suffrages exprimés",
     "non_cartographic_table_title": "Poids électoral des territoires non cartographiables",
@@ -181,7 +183,21 @@
     "non_cartographic_warning": "Ces territoires sont exclus des cartes départementales, mais inclus dans les tableaux et dans cette analyse spécifique.",
     "non_cartographic_turnout_title": "Participation par territoire non cartographiable",
     "non_cartographic_votes_title": "Suffrages exprimés par territoire non cartographiable",
-    "geo_non_cart": "Les circonscriptions suivantes sont présentes dans les résultats électoraux\nmais ne disposent pas de polygone départemental dans le shapefile OpenStreetMap :"
+    "geo_non_cart": "Les circonscriptions suivantes sont présentes dans les résultats électoraux\nmais ne disposent pas de polygone départemental dans le shapefile OpenStreetMap :",
+
+
+    "quality_correlation_title": "Corrélations numériques",
+    "quality_business_checks_title": "Contrôles métier — dataset présidentiel",
+    "quality_distribution_title": "Distributions et valeurs extrêmes",
+    "quality_duplicate_help": "Lignes entièrement dupliquées / clés métier dupliquées.",
+    "quality_missingno_caption": "Visualisation des valeurs présentes et manquantes par colonne.",
+    "quality_correlation_caption": "Les corrélations décrivent des relations linéaires entre variables numériques ; elles ne prouvent pas de causalité.",
+    "quality_check_unique_codes": "Codes départementaux uniques",
+    "quality_check_turnout_chain": "Cohérence inscrits / votants / exprimés",
+    "quality_check_non_negative": "Volumes électoraux non négatifs",
+    "quality_check_vote_sum": "Somme des voix candidates = suffrages exprimés",
+    "quality_check_candidate_count": "Nombre constant de candidats par département",
+    "quality_check_candidate_scores": "Scores candidats non négatifs"
 
 
 
@@ -284,7 +300,10 @@
     "error": "Unable to parse the file",
     "rows": "Territories loaded",
     "encoding": "Detected encoding",
-    "missing": "Missing values (normalized tables)",
+    "missings": ["Missing values departments", "Missing values candidates", "Missing values total"],
+    "duplicates": ["Duplicates departments", "Duplicates candidates"],
+    "duplicates_help": ["Entirely duplicated lines / duplicated department codes.",
+    "Entirely duplicated rows / duplicated department-candidate pairs."],
 
     "quality_details": "Validation details",
     "unload_dataset": "Unload dataset",
@@ -381,7 +400,21 @@
     "non_cartographic_warning": "These territories are excluded from departmental maps but included in the tables and in this dedicated analysis.",
     "non_cartographic_turnout_title": "Turnout by non-mappable territory",
     "non_cartographic_votes_title": "Votes cast by non-mappable territory",
-    "geo_non_cart": "The following constituencies appear in the election results\nbut do not have a corresponding departmental polygon in the OpenStreetMap shapefile:"
+    "geo_non_cart": "The following constituencies appear in the election results\nbut do not have a corresponding departmental polygon in the OpenStreetMap shapefile:",
+
+
+    "quality_correlation_title": "Numerical correlations",
+    "quality_business_checks_title": "Domain checks - presidential dataset",
+    "quality_distribution_title": "Distributions and outliers",
+    "quality_duplicate_help": "Fully duplicated rows / duplicated business keys.",
+    "quality_missingno_caption": "Visualisation of present and missing values by column.",
+    "quality_correlation_caption": "Correlations describe linear relationships between numerical variables; they do not prove causality.",
+    "quality_check_unique_codes": "Unique department codes",
+    "quality_check_turnout_chain": "Registered / voters / votes cast consistency",
+    "quality_check_non_negative": "Non-negative electoral volumes",
+    "quality_check_vote_sum": "Candidate votes equal votes cast",
+    "quality_check_candidate_count": "Constant number of candidates per department",
+    "quality_check_candidate_scores": "Non-negative candidate scores"
 
 
   }

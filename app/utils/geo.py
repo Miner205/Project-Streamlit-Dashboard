@@ -50,6 +50,45 @@ TERRITORIES = {
     "Territoires non cartographiables": list(NON_CARTOGRAPHIABLE),
 }
 
+TERRITORY_MAP_VIEWS = {
+    "Toutes circonscriptions": {
+        "center": {"lat": 46.6, "lon": 2.4},
+        "zoom": 1.5,
+    },
+    "France métropolitaine": {
+        "center": {"lat": 46.6, "lon": 2.4},
+        "zoom": 4.6,
+    },
+    "Corse": {
+        "center": {"lat": 42.15, "lon": 9.0},
+        "zoom": 7.2,
+    },
+    "Outre-mer cartographiable": {
+        "center": {"lat": 10.0, "lon": -55.0},
+        "zoom": 3.1,
+    },
+    "Guadeloupe": {
+        "center": {"lat": 16.24, "lon": -61.53},
+        "zoom": 8.4,
+    },
+    "Martinique": {
+        "center": {"lat": 14.64, "lon": -61.02},
+        "zoom": 8.4,
+    },
+    "Guyane": {
+        "center": {"lat": 3.93, "lon": -53.13},
+        "zoom": 5.4,
+    },
+    "La Réunion": {
+        "center": {"lat": -21.11, "lon": 55.53},
+        "zoom": 8.4,
+    },
+    "Mayotte": {
+        "center": {"lat": -12.83, "lon": 45.17},
+        "zoom": 9.0,
+    },
+}
+
 
 @st.cache_data(show_spinner="Chargement des contours départementaux…")
 def load_departements_geo():
@@ -199,8 +238,8 @@ def department_map(t,
         hover_name="department",
         hover_data=hover_data,
         labels={value_col: color_label, "department": "Département"},
-        center=center or {"lat": 46.6, "lon": 2.4},
-        zoom=4.1,
+        center=center or TERRITORY_MAP_VIEWS[territory]["center"],
+        zoom=TERRITORY_MAP_VIEWS[territory]["zoom"],
         opacity=0.82,
         height=620,
     )
