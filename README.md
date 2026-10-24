@@ -2,11 +2,21 @@
 Data Storytelling Dashboard
 Arthur Donnat
 
+cf App for more infos
+
+
 # Github link :
 https://github.com/Miner205/Project-Streamlit-Dashboard
 
 # Deployed App link :
 https://project-app-dashboard-arthur.streamlit.app/
+
+
+## Déploiement et remise finale
+
+Sur Streamlit Community Cloud : https://project-app-dashboard-arthur.streamlit.app/.
+
+Livrables finaux : app, ZIP dataset/lien + README + Python, vidéo 2–4 min, URL déployée, dépôt avec code/rapport et storyboard. Exemple DAI : StApp26_20000_NOM_DAI.zip.
 
 
 ## random infos:
@@ -66,25 +76,41 @@ Un retour initial vide utilise temporairement l'anglais.
 Les locales fr-* et en-* sont normalisées. Le sélecteur manuel est prioritaire.
 
 
-## Structure
+## Structure : 
+Project Streamlit Dashboard/
+├── app/
+│   ├── .streamlit/
+│   │   └── config.toml
+│   ├── pages/
+│   │   ├── 1_📖_Dashboard_-_Story.py
+│   │   ├── 2_📊_Dashboard_-_Quality_and_Method…
+│   │   ├── 3_📑_Dashboard_-_Exploration_EDA.py
+│   │   └── 4_📑_Dashboard_-_Interactive_Analysis…
+│   ├── utils/
+│   │   ├── content.json
+│   │   ├── geo.py
+│   │   ├── i18n.py
+│   │   └── parser.py
+│   └── 🏠_Accueil_-_Home.py
+├── assets/
+│   ├── LOGO-EFREI.png
+│   └── Photo Arthur Donnat.jpg
+├── data/
+│   ├── departements-20180101-shp/
+│   │   ├── departements - LICENCE.txt
+│   │   ├── departements-20180101.cpg
+│   │   ├── departements-20180101.dbf
+│   │   ├── departements-20180101.prj
+│   │   ├── departements-20180101.shp
+│   │   ├── departements-20180101.shx
+│   │   └── departements-descriptif.txt
+│   └── resultats-par-niveau-dpt-t1-france-entiere…
+├── .gitignore
+├── IndividualStudentPRJ_ Data StorytellingDashbo…
+├── README.md
+└── requirements.txt
++ Video + report + autres potentiellement.
 
-- app.py : composition de l’accueil et choix de langue.
-- utils/content.py : contenus FR/EN séparés de l’interface.
-- utils/language.py : normalisation testable des locales.
-- .streamlit/config.toml : thème natif, sans CSS interne fragile.
-- tests/ : tests unitaires indépendants de Streamlit.
-
-## Suite du projet
-
-À réception du dataset : inspecter source, licence, unités, schéma et volume ; définir la question et le public ; concevoir le storyboard ; ajouter des modules de chargement/cache, préparation et visualisation ; créer les pages Histoire, EDA, Analyse, Qualité et Conclusions. La navigation multipage sera ajoutée à ce moment, sans pages factices.
-
-`st.cache_data` n’est pas ajouté artificiellement à cet accueil statique : il sera utilisé pour le chargement et les traitements appropriés. Les exigences des trois visuels, carte ou petits multiples et KPI filtrés concernent le dashboard final, pas cette étape sans données.
-
-## Déploiement et remise finale
-
-Sur Streamlit Community Cloud :.
-
-Livrables finaux : app, ZIP dataset/lien + README + Python, vidéo 2–4 min, URL déployée, dépôt avec code/rapport et storyboard. Exemple DAI : StApp26_20000_NOM_DAI.zip. L’archive de ce socle n’est pas la remise finale.
 
 ## Références
 
