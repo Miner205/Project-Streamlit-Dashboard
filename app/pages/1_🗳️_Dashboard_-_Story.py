@@ -93,24 +93,25 @@ upload_key = (
 )
 
 with st.sidebar:
-    st.file_uploader(t["upload"],
-                     type=["txt","csv"],
-                     key=upload_key,
-                     on_change=remember_upload,
-                     args=(upload_key,))
-    st.button(
-        t["unload_dataset"],
-        key="unload_dataset_button",
-        on_click=return_to_default,
-        disabled=(
-                st.session_state["dataset_source"] != "custom source"
-        ),
-        help=t["unload_dataset_help"],
-    )
-    if st.session_state["dataset_filename"]:
-        st.caption(
-            f"📄 {st.session_state['dataset_filename']}"
+    with st.expander(t["upload_expander"], expanded=False, key="upload_expander"):
+        st.file_uploader(t["upload"],
+                         type=["txt","csv"],
+                         key=upload_key,
+                         on_change=remember_upload,
+                         args=(upload_key,))
+        st.button(
+            t["unload_dataset"],
+            key="unload_dataset_button",
+            on_click=return_to_default,
+            disabled=(
+                    st.session_state["dataset_source"] != "custom source"
+            ),
+            help=t["unload_dataset_help"],
         )
+        if st.session_state["dataset_filename"]:
+            st.caption(
+                f"📄 {st.session_state['dataset_filename']}"
+            )
 
 
 ### Load dataset
@@ -120,7 +121,6 @@ def load_results(raw):
     return pd.DataFrame(departments), pd.DataFrame(candidates), report
 
 if st.session_state.get("dataset_bytes") is None:
-    print(DEFAULT_PATH)
     if not DEFAULT_PATH.exists():
         st.error(f"{t['default_file_error']}: {DEFAULT_PATH.name}")
         st.stop()
@@ -130,9 +130,10 @@ if st.session_state.get("dataset_bytes") is None:
 with st.sidebar:
     if st.session_state["dataset_source"] != "custom source":
         st.caption(t["default_dataset"])
-        st.markdown(f':small[[{t["source"]}]({SOURCE})]')
     else:
         st.caption(t["custom_dataset"])
+    st.markdown(f':small[[{t["source"]}]({SOURCE})]')
+    st.divider()
 try:
     departments, candidates, report = load_results(st.session_state.get("dataset_bytes"))
 except ValueError as exc:

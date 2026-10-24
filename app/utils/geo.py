@@ -160,13 +160,12 @@ def normalize_department_code(value):
 
 def territory_filter(label="Territoire à afficher"):
     """Filtre persistant dans la sidebar, conservé entre les pages Streamlit."""
-    if "territory" not in st.session_state:
-        st.session_state["territory"] = "France métropolitaine"
-
     return st.selectbox(
         label,
-        list(TERRITORIES.keys()),
-        key="territory"
+        list(sorted(TERRITORIES.keys())),
+        key="territory",
+        persist_state="session",
+        index=1
     )
 
 

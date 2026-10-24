@@ -24,11 +24,17 @@ Election présidentielle 2012 - Résultats (par régions, départements, circons
 https://www.data.gouv.fr/datasets/election-presidentielle-2012-resultats-572124
 
 
-## Déploiement et remise finale
-
+## Déploiement et remise finale :
 Sur Streamlit Community Cloud : https://project-app-dashboard-arthur.streamlit.app/.
 
-Livrables finaux : app, ZIP dataset/lien + README + Python, vidéo 2–4 min, URL déployée, dépôt avec code/rapport et storyboard. Exemple DAI : StApp26_20000_NOM_DAI.zip.
+Livrables finaux :
+app / URL app déployée,
+ZIP dataset/lien + README + Python,
+vidéo 2–4 min,
+dépôt avec code/rapport et storyboard.
+Exemple zip DAI : StApp26_20000_NOM_DAI.zip.
+
+report : no real report provided, since there is already a lot of info in the README, App, Dashboard Story, Video, etc.
 
 
 ## random infos:
@@ -41,8 +47,6 @@ Navigation :
   - analyse interactive.
 
 Dans la barre latérale, charger le TXT départemental complet. Le calcul est local au processus Streamlit ; sur un hébergement distant, l’upload transfère le fichier au serveur. `st.cache_data` conserve les tables traitées en cache du processus : ne pas y envoyer de fichiers confidentiels.
-
-report : no real report provided, since there is already a lot of info in the README, App, Dashboard Story, Video, etc.
 
 
 ## Limites actuelles & TODO :
@@ -72,7 +76,7 @@ OR you can also create a new pycharm run configuration to run it using :
 - and with parameters 'run app/🏠_Accueil_-_Home.py'
 
 
-## Format particulier du dataset élection présidentielle:
+## Format particulier du dataset élection présidentielle :
 
 17 colonnes départementales, suivies de N blocs candidat à 6 champs : sexe, nom, prénom, voix, % voix/inscrits, % voix/exprimés. L’en-tête peut ne nommer que le premier bloc. Le parseur n’utilise donc pas directement `pd.read_csv` avec cet en-tête.
 
@@ -86,7 +90,7 @@ OR you can also create a new pycharm run configuration to run it using :
 - Contrôles des identités comptables, sommes des voix, cohérence des candidats et pourcentages publiés (tolérance 0,02 point).
 
 
-## Langues
+## Langues :
 
 L’application importe `from language_detection import detect_browser_language` et appelle le composant sans argument à chaque exécution.
 Un retour initial vide utilise temporairement l'anglais.
@@ -129,24 +133,24 @@ Project Streamlit Dashboard/
 + Video
 
 
-## Références
+## Références :
 
 - Consignes : Individual Student Project : Streamlit Dashboard, Project proposed by Mano Joseph Mathew, EFREI, PDF des consignes.
 - https://docs.streamlit.io/
 - https://github.com/louisoutin/streamlit-browser-language
 - Portails autorisés : https://www.data.gouv.fr/datasets ; https://gd4h.ecologie.gouv.fr/en/catalogue ; https://data.europa.eu/data/combined?locale=en
 
-## Data (main) - élection présidentielle 2022 1er tour
+## Data (main) - élection présidentielle 2022 1er tour :
 - source of the used dataset : https://www.data.gouv.fr/datasets/election-presidentielle-des-10-et-24-avril-2022-resultats-definitifs-du-1er-tour
 - cf dataset info on the streamlit app.
 
 
-## Données géographiques
+## Données géographiques :
 Le dashboard utilise les **contours des départements français issus d’OpenStreetMap**, 
 publiés sur data.gouv.fr :
 https://www.data.gouv.fr/datasets/contours-des-departements-francais-issus-d-openstreetmap
 
-### Licence et attribution
+### Licence et attribution :
 Les contours proviennent d’OpenStreetMap et sont diffusés sous licence 
 **Open Data Commons Open Database License (ODbL)**.  
 L’attribution suivante doit être conservée :
@@ -154,7 +158,7 @@ L’attribution suivante doit être conservée :
 Source :  
 https://www.data.gouv.fr/datasets/contours-des-departements-francais-issus-d-openstreetmap
 
-### Fichiers utilisés
+### Fichiers utilisés :
 ```text
 data/departements-20180101-shp/
 ├── departements-20180101.shp
@@ -165,7 +169,7 @@ data/departements-20180101-shp/
 └── departements-descriptif.txt
 ```
 
-### Description
+### Description :
 - **Date de référence :** 04/01/2018.
 - **Niveau géographique :** département.
 - **Système de coordonnées :** WGS84.
@@ -173,12 +177,12 @@ data/departements-20180101-shp/
 - **Attributs utilisés :** `code_insee`, `nom`, `nuts3`, `wikidata` et `surf_km2`.
 - **Jointure :** `code_insee` du shapefile avec le code département du fichier des résultats de la présidentielle 2022.
 
-### Compatibilité avec les élections de 2022
+### Compatibilité avec les élections de 2022 :
 Les contours datent de 2018, tandis que les résultats électoraux datent de 2022.  
 Cette différence n’est pas problématique ici, car l’analyse est réalisée au niveau 
 départemental et les codes départementaux utilisés pour la jointure restent compatibles.
 
-### Filtre territorial
+### Filtre territorial :
 Une sidebar permet de choisir le territoire affiché :
 - Toutes circonscriptions
 - France métropolitaine
@@ -190,7 +194,7 @@ Une sidebar permet de choisir le territoire affiché :
 - La Réunion
 - Mayotte
 
-### Cartes proposées
+### Cartes proposées :
 - Carte de la participation par département.
 - Carte du score départemental d’un candidat sélectionné.
 - Contrôle visuel de la couverture géographique et de la jointure des codes INSEE.

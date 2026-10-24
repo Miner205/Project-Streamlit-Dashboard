@@ -23,6 +23,7 @@
       "Lien du dépôt avec code et rapport.",
       "Storyboard et lien de la vidéo."
     ],
+    "upload_expander": "Charger votre propre dataset",
     "upload": "Optionnel : Charger votre propre TXT départemental (séparateur point-virgule)",
     "custom_file_info": "Vous pouvez charger votre propre fichier depuis la barre latérale. Fichier par défaut chargé automatiquement.",
     "story_title": "Un scrutin national, des contrastes départementaux",
@@ -292,6 +293,7 @@
       "Repository link with code and report.",
       "Storyboard and demo video link."
     ],
+    "upload_expander": "Upload your own dataset",
     "upload": "Optional: Upload a custom department TXT file (semicolon-delimited)",
     "custom_file_info": "You can upload a custom file in the sidebar. Default file is loaded automatically.",
     "story_title": "One national election, contrasting departments",

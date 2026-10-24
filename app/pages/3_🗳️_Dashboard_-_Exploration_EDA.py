@@ -46,6 +46,7 @@ with st.sidebar:
     choice = st.selectbox("Langue / Language", ["auto", "fr", "en"],
         format_func=lambda x: {"auto": "Automatique / Automatic", "fr": "Français", "en": "English"}[x],
         key="_language_mode_widget", on_change=save_language_mode)
+    st.divider()
 mode = st.session_state["language_mode"]
 lang = (
     st.session_state.get("app_detected_language", "en")
@@ -93,24 +94,25 @@ upload_key = (
 )
 
 with st.sidebar:
-    st.file_uploader(t["upload"],
-                     type=["txt","csv"],
-                     key=upload_key,
-                     on_change=remember_upload,
-                     args=(upload_key,))
-    st.button(
-        t["unload_dataset"],
-        key="unload_dataset_button",
-        on_click=return_to_default,
-        disabled=(
-                st.session_state["dataset_source"] != "custom source"
-        ),
-        help=t["unload_dataset_help"],
-    )
-    if st.session_state["dataset_filename"]:
-        st.caption(
-            f"📄 {st.session_state['dataset_filename']}"
+    with st.expander(t["upload_expander"], expanded=False, key="upload_expander"):
+        st.file_uploader(t["upload"],
+                         type=["txt","csv"],
+                         key=upload_key,
+                         on_change=remember_upload,
+                         args=(upload_key,))
+        st.button(
+            t["unload_dataset"],
+            key="unload_dataset_button",
+            on_click=return_to_default,
+            disabled=(
+                    st.session_state["dataset_source"] != "custom source"
+            ),
+            help=t["unload_dataset_help"],
         )
+        if st.session_state["dataset_filename"]:
+            st.caption(
+                f"📄 {st.session_state['dataset_filename']}"
+            )
 
 
 ### Load dataset
@@ -129,9 +131,11 @@ if st.session_state.get("dataset_bytes") is None:
     st.session_state["dataset_source"] = SOURCE
 with st.sidebar:
     if st.session_state["dataset_source"] != "custom source":
-        st.markdown(f':small[[{t["source"]}]({SOURCE})]')
+        st.caption(t["default_dataset"])
     else:
         st.caption(t["custom_dataset"])
+    st.markdown(f':small[[{t["source"]}]({SOURCE})]')
+    st.divider()
 try:
     departments, candidates, report = load_results(st.session_state.get("dataset_bytes"))
 except ValueError as exc:
@@ -157,20 +161,22 @@ st.divider()
 
 # filters
 with st.sidebar:
-    st.header(t["filters"])
-    territory = territory_filter(f"{t["territory_filter"]}")
-    departments_filtered = filter_by_territory(departments, territory)
-    codes = st.multiselect(
-        t["departments"],
-        departments_filtered["code"].tolist(),
-        default=departments_filtered["code"].tolist(),
-        format_func=lambda code: (
-            code + " - "
-            + departments_filtered.set_index("code").loc[code, "department"]
-        ),
-    )
-    names = sorted(candidates["candidate"].unique())
-    chosen = st.multiselect(t["candidates"], names, default=names)
+    with st.expander(f"**{t["filters"]}**", expanded=True, key="filters_expander"):
+        territory = territory_filter(f"{t["territory_filter"]}")
+        departments_filtered = filter_by_territory(departments, territory)
+        codes = st.multiselect(
+            t["departments"],
+            departments_filtered["code"].tolist(),
+            default=departments_filtered["code"].tolist(),
+            format_func=lambda code: (
+                code + " - "
+                + departments_filtered.set_index("code").loc[code, "department"]
+            ),
+            key="departments", persist_state="session"
+        )
+        names = sorted(candidates["candidate"].unique())
+        chosen = st.multiselect(t["candidates"], names, default=names[0],
+        key="candidates", persist_state="session")
 if not codes or not chosen:
     st.warning(t["empty"])
     st.stop()
