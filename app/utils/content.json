@@ -2,7 +2,6 @@
   "fr": {
     "dashboard_title": "Data Storytelling : Election présidentielle 2022 1er tour",
     "pages": [
-      "Accueil",
       "Histoire du dataset",
       "Exploration - EDA",
       "Analyse interactive",
@@ -12,7 +11,7 @@
     "home_subtitle": "Des données à une histoire qui compte",
     "dashboard_subtitle": "Des données publiques à une histoire électorale",
     "intro": "Projet individuel EFREI : construire une application Streamlit qui raconte une histoire défendable, du problème aux implications.",
-    "status": "Dataset choisi : résultats définitifs du premier tour de la présidentielle 2022, par département. Charge le fichier TXT complet pour commencer.",
+    "dataset": "Dataset choisi pour mon dashboard : résultats définitifs du premier tour de la présidentielle 2022, par département.",
     "brief_title": "Les consignes du projet",
     "rubric_title": "Barème sur 100 points",
     "deliverables_title": "Livrables",
@@ -24,11 +23,12 @@
       "Lien du dépôt avec code et rapport.",
       "Storyboard et lien de la vidéo."
     ],
-    "upload": "Charger le TXT départemental (séparateur point-virgule)",
+    "upload": "Optionnel : Charger votre propre TXT départemental (séparateur point-virgule)",
     "custom_file_info": "Vous pouvez charger votre propre fichier depuis la barre latérale. Fichier par défaut chargé automatiquement.",
     "story_title": "Un scrutin national, des contrastes départementaux",
     "my_question": "Question directrice : comment la participation et la répartition des suffrages diffèrent-elles entre départements au premier tour de 2022 ?",
     "audience": "Public : lecteurs souhaitant comprendre les contrastes territoriaux du scrutin, sans inférer les comportements individuels.",
+    "takeaways": "Points clés :",
     "story": [
       "Contexte : un seul scrutin et un seul tour. Ce fichier ne permet pas d’étudier une évolution temporelle.",
       "Explorer d’abord la participation, les bulletins blancs et nuls, puis les scores des candidats.",
@@ -36,7 +36,7 @@
       "Les différences territoriales sont descriptives : aucune causalité démographique, sociale ou politique n’est établie ici."
     ],
     "source": "Source officielle",
-    "license": "La fiche du portail affiche « License Not Specified » : licence de la ressource à clarifier avant redistribution. Ne pas assimiler la licence du site à celle du dataset.",
+    "license": "Dataset License : la fiche du portail affiche « License Not Specified ».",
     "filters": "Filtres",
     "departments": "Départements",
     "candidates": "Candidats",
@@ -114,7 +114,8 @@
     "packaging": "Figer les dépendances, tester dans un environnement propre et fournir des instructions simples. Pour des fichiers volumineux, préférer un script de téléchargement avec cache. Si un échantillonnage est utilisé, fixer les graines ou constantes.",
     "footer": "Référence : consignes « Individual Student Project : Streamlit Dashboard », Mano Joseph Mathew, EFREI, 6 pages. Cette page est une synthèse ; le PDF reste la référence.",
     "links": "Sources et documentation",
-    "rubric": [["Narration et problématique", 25, "Public, questions, messages clés et cohérence du storyboard."], ["Travail sur les données", 25, "Sources, nettoyage, validation et construction de variables."], ["Visualisation et UX", 25, "Graphiques adaptés, annotations, légendes, couleurs et interactions."], ["Qualité de l’ingénierie", 15, "Structure, cache, performance, reproductibilité et documentation."], ["Communication", 10, "Clarté du rapport, démonstration et transparence des limites."]]
+    "rubric": [["Narration et problématique", 25, "Public, questions, messages clés et cohérence du storyboard."], ["Travail sur les données", 25, "Sources, nettoyage, validation et construction de variables."], ["Visualisation et UX", 25, "Graphiques adaptés, annotations, légendes, couleurs et interactions."], ["Qualité de l’ingénierie", 15, "Structure, cache, performance, reproductibilité et documentation."], ["Communication", 10, "Clarté du rapport, démonstration et transparence des limites."]],
+    "home_nav": ["Accueil", "Profil", "Consignes"]
   },
 
 
@@ -135,7 +136,6 @@
   "en": {
     "dashboard_title": "Data Storytelling: French Presidential Election 2022, 1st round",
     "pages": [
-      "Home",
       "Dataset story",
       "Exploration - EDA",
       "Interactive analysis",
@@ -145,7 +145,7 @@
     "home_subtitle": "From data to a story that matters",
     "dashboard_subtitle": "From public data to an electoral story",
     "intro": "EFREI individual project: build a Streamlit application that tells a defensible story, from a question to its implications.",
-    "status": "Selected dataset: definitive first-round results of the 2022 presidential election, by department. Upload the full TXT file to begin.",
+    "dataset": "Chosen dataset for my dashboard: definitive first-round results of the 2022 French presidential election, by department.",
     "brief_title": "Project brief/requirements",
     "rubric_title": "Assessment out of 100",
     "deliverables_title": "Deliverables",
@@ -157,11 +157,12 @@
       "Repository link with code and report.",
       "Storyboard and demo video link."
     ],
-    "upload": "Upload the department TXT file (semicolon-delimited)",
+    "upload": "Optional: Upload a custom department TXT file (semicolon-delimited)",
     "custom_file_info": "You can upload a custom file in the sidebar. Default file is loaded automatically.",
     "story_title": "One national election, contrasting departments",
     "my_question": "Main question: how do turnout and candidate vote shares differ across departments in the first round of 2022?",
     "audience": "Audience: readers seeking to understand territorial contrasts without inferring individual behavior.",
+    "takeaways": "Takeaways:",
     "story": [
       "Context: one election and one round. This file cannot support time-trend analysis.",
       "Explore turnout, blank and invalid ballots, then candidate scores.",
@@ -169,7 +170,7 @@
       "Territorial differences are descriptive: no demographic, social or political causation is established here."
     ],
     "source": "Official source",
-    "license": "The portal displays “License Not Specified”: clarify the resource license before redistribution. Do not assume the website license applies to this dataset.",
+    "license": "Dataset License: the portal displays “License Not Specified”.",
     "filters": "Filters",
     "departments": "Departments",
     "candidates": "Candidates",
@@ -245,6 +246,7 @@
     "packaging": "Pin dependencies, test in a clean environment and provide simple run instructions. For large raw files, prefer a download script with caching. Fix seeds or constants if sampling is used.",
     "footer": "Reference: “Individual Student Project : Streamlit Dashboard”, Mano Joseph Mathew, EFREI, 6 pages. This page is a summary; the PDF remains authoritative.",
     "links": "Sources and documentation",
-    "rubric": [["Narrative and problem framing", 25, "Audience, questions, takeaways and storyboard alignment."], ["Data work", 25, "Sourcing, cleaning, validation and feature engineering."], ["Visualization and UX", 25, "Appropriate charts, annotations, legends, colors and interactions."], ["Engineering quality", 15, "Structure, caching, performance, reproducibility and documentation."], ["Communication", 10, "Report clarity, effective demo and transparent limitations."]]
+    "rubric": [["Narrative and problem framing", 25, "Audience, questions, takeaways and storyboard alignment."], ["Data work", 25, "Sourcing, cleaning, validation and feature engineering."], ["Visualization and UX", 25, "Appropriate charts, annotations, legends, colors and interactions."], ["Engineering quality", 15, "Structure, caching, performance, reproducibility and documentation."], ["Communication", 10, "Report clarity, effective demo and transparent limitations."]],
+    "home_nav": ["Home", "Profile", "Project Brief"]
   }
 }

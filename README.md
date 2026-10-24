@@ -24,7 +24,7 @@ Dans la barre latérale, charger le TXT départemental complet. Le calcul est lo
 Python 3.13 (Conda used)
 
 ## To run the web app :
-- In pycharm terminal, run the command "streamlit run app/Accueil_-_Home.py" in the project folder.
+- In pycharm terminal, run the command "streamlit run app/🏠_Accueil_-_Home.py" in the project folder.
 - open a web page with url "http://localhost:8501/"
 - to close/stop the app do ctrl+c in the terminal
 
@@ -32,7 +32,7 @@ OR you can also create a new pycharm run configuration to run it using :
 - a (new) python run configuration
 - with your python interpreter
 - with, instead of 'script' by default, 'module' with the value 'streamlit'
-- and with parameters 'run app/Accueil_-_Home.py'
+- and with parameters 'run app/🏠_Accueil_-_Home.py'
 
 
 ## Format particulier du fichier

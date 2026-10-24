@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-CONTENT_PATH = Path(__file__).with_name("content.json")
+CONTENT_PATH = Path("app/utils/content.json")
 
 def load_content():
     with CONTENT_PATH.open(encoding="utf-8") as file:
@@ -9,6 +9,6 @@ def load_content():
 
 def normalize_language(value):
     if not isinstance(value, str):
-        return "fr"
+        return "en"
     code = value.strip().lower().replace("_", "-").split("-")[0]
-    return code if code in {"fr", "en"} else "fr"
+    return code if code in {"fr", "en"} else "en"

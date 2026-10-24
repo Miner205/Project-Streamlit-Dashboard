@@ -3,8 +3,7 @@ from pathlib import Path
 import logging
 import streamlit as st
 from language_detection import detect_browser_language
-from utils.i18n import load_content
-from utils.language import normalize_language
+from utils.i18n import load_content, normalize_language
 
 st.set_page_config(page_title="Data Storytelling Dashboard", page_icon="📊", layout="wide")
 
@@ -54,13 +53,14 @@ t = load_content()[lang]
 ### NAVIGATION
 
 with st.sidebar:
-    st.title("Home Navigation:")
-    st.markdown("[Profil](#profil)")
+    st.title(f"{t["home_nav"][0]} Navigation:")
+    st.markdown(f"[{t["home_nav"][1]}](#profile)")
+    st.markdown(f"[{t["home_nav"][2]}](#brief)")
     st.divider()
 
 
 ### PROFILE & Social medias
-st.markdown('<div id="profil"></div>', unsafe_allow_html=True)
+st.markdown('<div id="profile"></div>', unsafe_allow_html=True)
 profile_picture_path = Path("assets/Photo Arthur Donnat.jpg")
 efrei_logo_path = Path("assets/LOGO-EFREI.png")
 left, right = st.columns([1, 3])
@@ -122,9 +122,12 @@ st.divider()
 
 
 ### content of the page
+st.markdown('<div id="brief"></div>', unsafe_allow_html=True)
 st.header(t["home_title"])
 st.subheader(t["home_subtitle"])
 st.write(t["intro"])
+
+st.subheader(t["dataset"])
 
 st.header(t["brief_title"])
 

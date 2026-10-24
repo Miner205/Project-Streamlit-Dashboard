@@ -1,0 +1,192 @@
+from pathlib import Path
+import logging
+import pandas as pd
+import plotly.express as px
+import streamlit as st
+from language_detection import detect_browser_language
+from utils.i18n import load_content, normalize_language
+from utils.parser import parse_results
+
+
+SOURCE = "https://www.data.gouv.fr/datasets/election-presidentielle-des-10-et-24-avril-2022-resultats-definitifs-du-1er-tour"
+DEFAULT_PATH = Path("data/resultats-par-niveau-dpt-t1-france-entiere.txt")
+
+st.set_page_config(page_title="Dashboard Présidentielle 2022", page_icon="🗳️", layout="wide")
+
+with st.sidebar:
+    st.header("Data Storytelling Dashboard")
+
+### Language
+if "language_mode" not in st.session_state:
+    st.session_state["language_mode"] = "auto"
+
+try:
+    browser_language = detect_browser_language()
+except Exception:
+    logging.getLogger(__name__).exception("Browser language detection failed")
+    browser_language = None
+
+# Remember the browser language once the component returns a value.
+# A temporary None on a later rerun must not reset it.
+if isinstance(browser_language, str) and browser_language.strip():
+    st.session_state["app_detected_language"] = normalize_language(browser_language)
+
+def save_language_mode():
+    st.session_state["language_mode"] = (
+        st.session_state["_language_mode_widget"]
+    )
+
+# Restore the widget from the persistent application value.
+st.session_state["_language_mode_widget"] = (
+    st.session_state["language_mode"]
+)
+
+with st.sidebar:
+    choice = st.selectbox("Langue / Language", ["auto", "fr", "en"],
+        format_func=lambda x: {"auto": "Automatique / Automatic", "fr": "Français", "en": "English"}[x],
+        key="_language_mode_widget", on_change=save_language_mode)
+    st.divider()
+mode = st.session_state["language_mode"]
+lang = (
+    st.session_state.get("app_detected_language", "en")
+    if mode == "auto"
+    else mode
+)
+st.session_state["language"] = lang
+t = load_content()[lang]
+
+
+### Upload own/custom file
+initial_state = {
+    "dataset_bytes": None,
+    "dataset_filename": None,
+    "dataset_source": SOURCE,
+    "dataset_upload_version": 0,
+}
+for key, value in initial_state.items():
+    if key not in st.session_state:
+        st.session_state[key] = value
+
+def return_to_default():
+    """Discard a custom dataset and reset the upload widget."""
+    st.session_state["dataset_bytes"] = None
+    st.session_state["dataset_filename"] = DEFAULT_PATH.name
+    st.session_state["dataset_source"] = SOURCE
+    # A new key creates an empty uploader on the next run.
+    st.session_state["dataset_upload_version"] += 1
+
+def remember_upload(widget_key):
+    """Copy an uploaded file into independent application state."""
+    file = st.session_state.get(widget_key)
+
+    if file is not None:
+        st.session_state["dataset_bytes"] = file.getvalue()
+        st.session_state["dataset_filename"] = file.name
+        st.session_state["dataset_source"] = "custom source"
+    else:
+        # Clicking the uploader's own X also returns to the default.
+        return_to_default()
+
+upload_key = (
+    f"_dataset_upload_"
+    f"{st.session_state['dataset_upload_version']}"
+)
+
+with st.sidebar:
+    st.file_uploader(t["upload"],
+                     type=["txt","csv"],
+                     key=upload_key,
+                     on_change=remember_upload,
+                     args=(upload_key,))
+    st.button(
+        t["unload_dataset"],
+        key="unload_dataset_button",
+        on_click=return_to_default,
+        disabled=(
+                st.session_state["dataset_source"] != "custom source"
+        ),
+        help=t["unload_dataset_help"],
+    )
+    if st.session_state["dataset_filename"]:
+        st.caption(
+            f"📄 {st.session_state['dataset_filename']}"
+        )
+
+
+### Load dataset
+@st.cache_data(show_spinner=False)
+def load_results(raw):
+    departments, candidates, report = parse_results(raw)
+    return pd.DataFrame(departments), pd.DataFrame(candidates), report
+
+if st.session_state.get("dataset_bytes") is None:
+    print(DEFAULT_PATH)
+    if not DEFAULT_PATH.exists():
+        st.error(f"{t['default_file_error']}: {DEFAULT_PATH.name}")
+        st.stop()
+    st.session_state["dataset_bytes"] = DEFAULT_PATH.read_bytes()
+    st.session_state["dataset_filename"] = DEFAULT_PATH.name
+    st.session_state["dataset_source"] = SOURCE
+with st.sidebar:
+    if st.session_state["dataset_source"] != "custom source":
+        st.caption(t["default_dataset"])
+        st.markdown(f':small[[{t["source"]}]({SOURCE})]')
+    else:
+        st.caption(t["custom_dataset"])
+    st.info(t["custom_file_info"])
+try:
+    departments, candidates, report = load_results(st.session_state.get("dataset_bytes"))
+except ValueError as exc:
+    st.error(f'{t["error"]}: {exc}')
+    if st.session_state["dataset_source"] == "custom source":
+        st.info(t["invalid_custom_dataset"])
+    else:
+        st.info(t["invalid_default_dataset"])
+    st.stop()
+
+
+st.title(t["dashboard_title"])
+st.markdown(f":small[Dataset {t["source"].lower()}: Election présidentielle des 10 et 24 avril 2022 - Résultats définitifs du 1er tour - par département — [{t["source"]}]({SOURCE}) — License Not Specified]")
+
+
+### content of the page
+with st.sidebar:
+    st.header(t["filters"])
+    codes=st.multiselect(t["departments"],departments["code"].tolist(),default=departments["code"].tolist(),format_func=lambda code:code+" · "+departments.set_index("code").loc[code,"department"])
+    names=sorted(candidates["candidate"].unique())
+    chosen=st.multiselect(t["candidates"],names,default=names)
+if not codes or not chosen:
+    st.warning(t["empty"])
+    st.stop()
+d=departments[departments["code"].isin(codes)].copy()
+all_c=candidates[candidates["code"].isin(codes)].copy()
+c=all_c[all_c["candidate"].isin(chosen)].copy()
+registered=int(d["registered"].sum())
+voters=int(d["voters"].sum())
+valid=int(d["valid"].sum())
+st.title(t["analysis_title"])
+st.caption(t["selected"])
+if report["issues"]:
+    st.warning(t["quality_bad"])
+for col,label,value in zip(st.columns(3),t["kpis"],[f"{registered:,}",f"{100*voters/registered:.2f} %" if registered else "—",f"{valid:,}"]):
+    col.metric(label,value)
+# Candidate filtering never changes turnout or the valid-vote denominator.
+st.caption("Le filtre candidat ne change pas la participation ni le dénominateur des scores." if lang=="fr" else "Candidate selection does not change turnout or vote-share denominators.")
+d["turnout_pct"]=100*d["voters"].div(d["registered"].replace(0,float("nan")))
+
+labels={"department":t["department"],"candidate":t["candidate"],"votes":t["votes"],"turnout_pct":t["turnout"],"share":t["score"]}
+st.subheader(t["charts"][0])
+st.plotly_chart(px.bar(d.sort_values("turnout_pct"),x="turnout_pct",y="department",orientation="h",labels=labels,height=max(450,22*len(d))),use_container_width=True)
+agg=c.groupby("candidate",as_index=False)["votes"].sum()
+agg["share"]=100*agg["votes"]/valid if valid else float("nan")
+st.subheader(t["charts"][1])
+st.plotly_chart(px.bar(agg.sort_values("share"),x="share",y="candidate",orientation="h",hover_data=["votes"],labels=labels),use_container_width=True)
+joined=c.merge(d[["code","valid"]],on="code",validate="many_to_one")
+joined["share"]=100*joined["votes"].div(joined["valid"].replace(0,float("nan")))
+st.subheader(t["charts"][2])
+matrix=joined.pivot(index="department",columns="candidate",values="share")
+fig=px.imshow(matrix,aspect="auto",color_continuous_scale="Blues",labels={"x":t["candidate"],"y":t["department"],"color":t["score"]},height=max(450,22*len(d)))
+fig.update_traces(hovertemplate="%{y}<br>%{x}<br>%{z:.2f} %<extra></extra>")
+st.plotly_chart(fig,use_container_width=True)
+st.info(t["geo"])
+st.write(t["conclusions"])
