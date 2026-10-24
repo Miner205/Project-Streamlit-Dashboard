@@ -52,10 +52,12 @@ Dans la barre latérale, charger le TXT départemental complet. Le calcul est lo
 ## Limites actuelles & TODO :
 - Pas de série temporelle : un seul tour de 2022.
 - La fiche data.gouv consultée affiche « License Not Specified » (pour le dataset élection présidentielle).
-- some translation in EN missing in dashboard quality.
-- try to use libraries : altair, pydeck(optional map layer), etc.
+- try to use libraries : altair, pydeck(optional map layer), pyarrow(memory-efficient opti) etc.
 - in sidebar try to put filters above optional upload file.
 - droite/gauche (quels départements vote plus à droite ou à gauche etc)
+- do blank vote analysis !!!
+- bug to fix: department filter ne recup/select par toujours auto les departments quand territoire est changer (entre metropole et outre mer par examples).
+- do something par rapport au department 69 // 69D, 69M ??
 - etc.
 
 

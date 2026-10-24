@@ -3,14 +3,13 @@ import logging
 import pandas as pd
 import numpy as np
 import plotly.express as px
-import plotly.graph_objects as go
 import missingno as msno
 import matplotlib.pyplot as plt
 import streamlit as st
 from language_detection import detect_browser_language
 from utils.i18n import load_content, normalize_language
 from utils.parser import parse_results
-from utils.geo import GEO_SOURCE, GEO_ATTRIBUTION, filter_by_territory, load_departements_geo, show_geo_credit, territory_filter, ELECTION_TO_INSEE, NON_CARTOGRAPHIABLE
+from utils.geo import GEO_SOURCE, GEO_ATTRIBUTION, load_departements_geo, show_geo_credit, ELECTION_TO_INSEE, NON_CARTOGRAPHIABLE
 
 
 SOURCE = "https://www.data.gouv.fr/datasets/election-presidentielle-des-10-et-24-avril-2022-resultats-definitifs-du-1er-tour"
@@ -205,9 +204,9 @@ def election_consistency_checks(departments, candidates):
     )
     checks.append(
         {
-            "label": t["quality_check_unique_codes"],
+            "label": t["quality_check_unique_codes_label"],
             "passed": duplicate_department_codes == 0,
-            "detail": f"{duplicate_department_codes} code(s) départemental(aux) dupliqué(s).",
+            "detail": f"{duplicate_department_codes} {t["quality_check_unique_codes_detail"]}.",
         }
     )
 
@@ -218,9 +217,9 @@ def election_consistency_checks(departments, candidates):
     ]
     checks.append(
         {
-            "label": t["quality_check_turnout_chain"],
+            "label": t["quality_check_turnout_chain_label"],
             "passed": invalid_turnout_chain.empty,
-            "detail": f"{len(invalid_turnout_chain)} département(s) concerné(s).",
+            "detail": f"{len(invalid_turnout_chain)} {t["quality_check_turnout_chain_detail"]}.",
         }
     )
 
@@ -234,9 +233,9 @@ def election_consistency_checks(departments, candidates):
     ] if volume_columns else departments.iloc[0:0]
     checks.append(
         {
-            "label": t["quality_check_non_negative"],
+            "label": t["quality_check_non_negative_label"],
             "passed": negative_volumes.empty,
-            "detail": f"{len(negative_volumes)} département(s) concerné(s).",
+            "detail": f"{len(negative_volumes)} {t["quality_check_non_negative_detail"]}.",
         }
     )
 
@@ -259,11 +258,10 @@ def election_consistency_checks(departments, candidates):
     ]
     checks.append(
         {
-            "label": t["quality_check_vote_sum"],
+            "label": t["quality_check_vote_sum_label"],
             "passed": inconsistent_votes.empty,
             "detail": (
-                f"{len(inconsistent_votes)} département(s) avec un écart "
-                "supérieur à 1 voix."
+                f"{len(inconsistent_votes)} {t["quality_check_vote_sum_detail"]}."
             ),
         }
     )
@@ -277,11 +275,10 @@ def election_consistency_checks(departments, candidates):
     )
     checks.append(
         {
-            "label": t["quality_check_candidate_count"],
+            "label": t["quality_check_candidate_count_label"],
             "passed": not inconsistent_candidate_counts,
             "detail": (
-                f"{candidates_per_department.nunique()} nombre(s) différent(s) "
-                "de candidats observé(s)."
+                f"{candidates_per_department.nunique()} {t["quality_check_candidate_count_detail"]}."
             ),
         }
     )
@@ -289,9 +286,9 @@ def election_consistency_checks(departments, candidates):
     negative_scores = candidates[candidates["votes"] < 0]
     checks.append(
         {
-            "label": t["quality_check_candidate_scores"],
+            "label": t["quality_check_candidate_scores_label"],
             "passed": negative_scores.empty,
-            "detail": f"{len(negative_scores)} ligne(s) concernée(s).",
+            "detail": f"{len(negative_scores)} {t["quality_check_candidate_scores_detail"]}.",
         }
     )
     return checks, vote_check
@@ -358,35 +355,40 @@ st.subheader(' '.join(t["missings"][0].split(' ')[:-1])+' - missingno')
 st.caption(t["quality_missingno_caption"])
 
 tab_missing_dept, tab_missing_cand = st.tabs([
-    "Départements",
-    "Candidats",
+    t["departments"],
+    t["candidates"],
 ])
 
-with tab_missing_dept:
-    st.caption("Matrix plot des valeurs manquantes dans le tableau départemental.")
-    fig_dept, ax_dept = plt.subplots(figsize=(10, 4))
-    msno.matrix(departments, ax=ax_dept, sparkline=False)
-    st.pyplot(fig_dept)
-    plt.close(fig_dept)
 
-    st.caption("Fréquence des valeurs présentes par colonne.")
-    fig_dept_bar, ax_dept_bar = plt.subplots(figsize=(10, 3))
-    msno.bar(departments, ax=ax_dept_bar, sort="descending")
-    st.pyplot(fig_dept_bar)
-    plt.close(fig_dept_bar)
+with tab_missing_dept:
+    missingno_left, missingno_right = st.columns(2)
+    with missingno_left:
+        st.caption(t["quality_missingno_plot_captions"][0])
+        fig_dept, ax_dept = plt.subplots(figsize=(10, 4))
+        msno.matrix(departments, ax=ax_dept, sparkline=False)
+        st.pyplot(fig_dept)
+        plt.close(fig_dept)
+    with missingno_right:
+        st.caption(t["quality_missingno_plot_captions"][1])
+        fig_dept_bar, ax_dept_bar = plt.subplots(figsize=(10, 3))
+        msno.bar(departments, ax=ax_dept_bar, sort="descending")
+        st.pyplot(fig_dept_bar)
+        plt.close(fig_dept_bar)
 
 with tab_missing_cand:
-    st.caption("Matrix plot des valeurs manquantes dans le tableau des candidats.")
-    fig_cand, ax_cand = plt.subplots(figsize=(10, 5))
-    msno.matrix(candidates, ax=ax_cand, sparkline=False)
-    st.pyplot(fig_cand)
-    plt.close(fig_cand)
-
-    st.caption("Fréquence des valeurs présentes par colonne.")
-    fig_cand_bar, ax_cand_bar = plt.subplots(figsize=(10, 3))
-    msno.bar(candidates, ax=ax_cand_bar, sort="descending")
-    st.pyplot(fig_cand_bar)
-    plt.close(fig_cand_bar)
+    missingno_left, missingno_right = st.columns(2)
+    with missingno_left:
+        st.caption(t["quality_missingno_plot_captions"][2])
+        fig_cand, ax_cand = plt.subplots(figsize=(10, 5))
+        msno.matrix(candidates, ax=ax_cand, sparkline=False)
+        st.pyplot(fig_cand)
+        plt.close(fig_cand)
+    with missingno_right:
+        st.caption(t["quality_missingno_plot_captions"][3])
+        fig_cand_bar, ax_cand_bar = plt.subplots(figsize=(10, 3))
+        msno.bar(candidates, ax=ax_cand_bar, sort="descending")
+        st.pyplot(fig_cand_bar)
+        plt.close(fig_cand_bar)
 
 
 ## corr
@@ -394,8 +396,8 @@ st.subheader(t["quality_correlation_title"])
 st.caption(t["quality_correlation_caption"])
 
 tab_corr_dept, tab_corr_cand = st.tabs([
-    "Départements",
-    "Candidats",
+    t["departments"],
+    t["candidates"],
 ])
 
 with tab_corr_dept:
@@ -404,40 +406,33 @@ with tab_corr_dept:
         exclude={"code"},
     )
     if dept_corr.empty:
-        st.info("Aucune colonne numérique exploitable dans le tableau départemental.")
+        st.info(t["quality_correlation_plot_emptys"][0])
     else:
         st.plotly_chart(
             plot_correlation_matrix(
                 dept_corr,
-                "Corrélations — indicateurs départementaux",
+                t["quality_correlation_plot_titles"][0],
             ),
         )
-        st.caption(
-            "Une forte corrélation positive entre inscrits, votants et suffrages "
-            "exprimés est attendue : ces variables décrivent des volumes liés."
-        )
+        st.caption(t["quality_correlation_plot_captions"][0])
 with tab_corr_cand:
     cand_corr = numeric_correlation_matrix(
         candidates,
         exclude={"code"},
     )
     if cand_corr.empty:
-        st.info("Aucune colonne numérique exploitable dans le tableau des candidats.")
+        st.info(t["quality_correlation_plot_emptys"][1])
     else:
         st.plotly_chart(
             plot_correlation_matrix(
                 cand_corr,
-                "Corrélations — résultats candidats",
+                t["quality_correlation_plot_titles"][1],
             ),
         )
-        st.caption(
-            "Les corrélations entre voix, pourcentages et rangs doivent être "
-            "interprétées avec prudence : elles dépendent du format exact des "
-            "colonnes produites par le parseur."
-        )
+        st.caption(t["quality_correlation_plot_captions"][1])
 
 
-# controls
+## controls - presidential dataset checks
 st.subheader(t["quality_business_checks_title"])
 
 consistency_checks, vote_check = election_consistency_checks(
@@ -451,7 +446,7 @@ for check in consistency_checks:
     else:
         st.warning(f"**{check['label']}** — {check['detail']}")
 
-with st.expander("Détail : écart entre somme des voix candidates et suffrages exprimés"):
+with st.expander(t["quality_check_gap_expander"], key="quality_check_gap_expander"):
     st.dataframe(
         vote_check[
             ["code", "department", "valid", "candidate_votes_total", "vote_gap"]
@@ -460,13 +455,10 @@ with st.expander("Détail : écart entre somme des voix candidates et suffrages 
         .head(30),
         hide_index=True,
     )
-    st.caption(
-        "Un écart de 0 ou 1 voix peut provenir d’un arrondi dans le fichier source. "
-        "Un écart important signale en revanche une anomalie potentielle."
-    )
+    st.caption(t["quality_check_gap_expander_caption"])
 
 
-# dist et extreme vals
+## distributions & extreme vals
 st.subheader(t["quality_distribution_title"])
 
 departments["turnout_pct"] = 100 * departments["voters"].div(
@@ -474,53 +466,53 @@ departments["turnout_pct"] = 100 * departments["voters"].div(
 )
 
 tab_turnout, tab_votes = st.tabs([
-    "Participation",
-    "Voix par candidat",
+    t["turnout"].strip(" (%)"),
+    t["votes_per_candidate"],
 ])
 with tab_turnout:
     fig_turnout = px.histogram(
         departments,
         x="turnout_pct",
+        color="department",
         nbins=30,
-        title="Distribution de la participation départementale",
-        labels={"turnout_pct": "Participation (%)", "count": "Nombre de départements"},
+        title=t["quality_distribution_plot_titles"][0],
+        labels={"turnout_pct": f"{t["turnout"]}",
+                "count": "Nombre de départements",
+                "department": t["department"]},
     )
-    fig_turnout.update_layout(height=450)
+    fig_turnout.update_layout(height=450,
+        showlegend=False,
+        bargap=0.05)
+    fig_turnout.update_traces(
+        marker_line_width=0.5,
+        marker_line_color="white")
     st.plotly_chart(fig_turnout)
 
-    st.caption(
-        "Les territoires d’outre-mer et les Français établis hors de France peuvent "
-        "présenter des participations très différentes de celles de la métropole."
-    )
+    st.caption(t["quality_distribution_plot_captions"][0])
 with tab_votes:
     fig_votes = px.box(
         candidates,
         x="candidate",
         y="votes",
         points="outliers",
-        title="Distribution des voix par candidat",
-        labels={"candidate": "Candidat", "votes": "Voix"},
+        title=t["quality_distribution_plot_titles"][1],
+        labels={"candidate": f"{t["candidate"]}", "votes": f"{t["votes"]}"},
     )
     fig_votes.update_layout(height=550, xaxis_tickangle=-45)
     st.plotly_chart(fig_votes)
 
-    st.caption(
-        "Les valeurs élevées ne sont pas nécessairement des anomalies : elles "
-        "reflètent la taille très différente des départements et territoires."
-    )
+    st.caption(t["quality_distribution_plot_captions"][1])
 
 
-
+st.markdown("<br><br>", unsafe_allow_html=True)
 st.caption(t["license"])
 
 st.divider()
 
 
 
-
-
 ### geo
-st.subheader("Contrôle de la jointure géographique")
+st.subheader(t["geo_quality_title"])
 
 if geo is None:
     st.error(f"{t["map_missing_shapefile"]}")
@@ -537,19 +529,17 @@ else:
     non_mapped = sorted(election_codes & NON_CARTOGRAPHIABLE.keys())
 
     col1, col2, col3 = st.columns(3)
-    col1.metric("Départements électoraux", len(election_codes))
-    col2.metric("Départements cartographiables", len(mapped_codes))
-    col3.metric("Territoires sans contour OSM", len(non_mapped))
+    col1.metric(t["electoral_departments"], len(election_codes))
+    col2.metric(t["mappable_dep"], len(mapped_codes))
+    col3.metric(t["territories_without_boundaries"], len(non_mapped))
 
     if missing_in_geo:
-        st.warning(
-            "Départements cartographiables absents des contours : "
-            + ", ".join(missing_in_geo)
+        st.warning(t["geo_quality_warning"]+
+            f" {t["absent_mappable_dep"]} "
+            + ", ".join(missing_in_geo) + " // " + ", ".join(sorted(geo_codes - mapped_codes))
         )
     else:
-        st.success(
-            "Tous les départements et DOM cartographiables sont appariés aux contours OSM."
-        )
+        st.success(t["geo_quality_ok"])
 
     with st.expander(t["geo_quality_method"], expanded=False):
         for text in t["geo_quality_method_text"]:
@@ -583,10 +573,10 @@ else:
             hide_index=True,
         )
 
-    with st.expander("Territoires non cartographiables", expanded=False):
+    with st.expander(t["territory_non_cartographic"], expanded=False):
         st.markdown(
             f"""
-            {t["geo_non_cart"]}
+            {t["geo_non_cart"]}<br>
             - `ZN` — Nouvelle-Calédonie  
             - `ZP` — Polynésie française  
             - `ZS` — Saint-Pierre-et-Miquelon  
@@ -594,15 +584,18 @@ else:
             - `ZX` — Saint-Martin / Saint-Barthélemy  
             - `ZZ` — Français établis hors de France  
             {t["non_cartographic_warning"]}
-            """
-        )
-st.subheader("Licences et attribution")
+            """, unsafe_allow_html=True)
+
+st.markdown("<br>", unsafe_allow_html=True)
+show_geo_credit(t)
+
+st.divider()
+st.subheader(t["licenses_and_attribution"])
 st.markdown(
     f"""
-    - **Résultats électoraux :** [data.gouv.fr]({SOURCE}).
-    - **Contours départementaux :** [OpenStreetMap via data.gouv.fr]({GEO_SOURCE}).
-    - **Attribution obligatoire :** {GEO_ATTRIBUTION}.
-    - **Licence des contours :** ODbL, avec partage à l’identique.
+    - **{t["election_results"]}** [data.gouv.fr]({SOURCE}).
+    - **{t["geo_credit"][0]}** [OpenStreetMap via data.gouv.fr]({GEO_SOURCE}).
+    - **{t["mandatory_attribution"]}** {GEO_ATTRIBUTION}.
+    - **{t["geo_license"]}:** ODbL, avec partage à l’identique.
     """
 )
-show_geo_credit(t)

@@ -192,7 +192,7 @@ st.caption(t["selected"])
 if report["issues"]:
     st.warning(t["quality_bad"])
 for col,label,value in zip(st.columns(3),t["kpis"],[f"{registered:,}",f"{100*voters/registered:.2f} %" if registered else "—",f"{valid:,}"]):
-    col.metric(label,value)
+    col.metric(label, value)
 # Candidate filtering never changes turnout or the valid-vote denominator.
 st.caption("Le filtre candidat ne change pas la participation ni le dénominateur des scores." if lang=="fr" else "Candidate selection does not change turnout or vote-share denominators.")
 d["turnout_pct"] = 100 * d["voters"].div(d["registered"].replace(0, float("nan")))

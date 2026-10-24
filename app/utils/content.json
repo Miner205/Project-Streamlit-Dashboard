@@ -40,6 +40,7 @@
     "license": "Dataset Election présidentielle License : la fiche du portail affiche « License Not Specified ».",
     "filters": "Filtres",
     "departments": "Départements",
+    "electoral_departments": "Départements électoraux",
     "candidates": "Candidats",
     "empty": "Sélectionne au moins un département et un candidat.",
     "selected": "Périmètre sélectionné uniquement — ne pas interpréter comme un total national sans vérifier la couverture.",
@@ -59,6 +60,7 @@
     "candidate": "Candidat",
     "department": "Département",
     "votes": "Voix",
+    "votes_per_candidate": "Voix par candidat",
     "gap": "Écart 1er–2e (points)",
     "charts": [
       "La participation varie selon les départements sélectionnés",
@@ -153,11 +155,14 @@
     "map_no_data": "Aucun territoire cartographiable pour cette sélection. ",
     "map_missing_shapefile": "Le shapefile des contours départementaux est introuvable. Les cartes ne peuvent pas être affichées.",
     "map_missing_overseas": "Certains territoires d’outre-mer ne sont pas renseignés dans le shapefile\net donc ne peuvent pas être affichés sur la carte.",
+
     "geo_quality_title": "Contrôle de la jointure géographique",
     "geo_quality_ok": "Tous les départements et DOM cartographiables sont appariés aux contours OpenStreetMap.",
     "geo_quality_warning": "Certains codes cartographiables n’ont pas pu être appariés aux contours.",
     "geo_credit": ["Contours départementaux :", "OpenStreetMap via data.gouv.fr", "Version au 04/01/2018, projection WGS84."],
     "mapped_dep": "Départements cartographiés",
+    "mappable_dep": "Départements cartographiables",
+    "absent_mappable_dep": "Départements cartographiables absents des contours :",
 
     "geo_quality_method": "Méthodologie de la jointure",
     "geo_quality_method_text": [
@@ -187,18 +192,52 @@
     "geo_non_cart": "Les circonscriptions suivantes sont présentes dans les résultats électoraux\nmais ne disposent pas de polygone départemental dans le shapefile OpenStreetMap :",
 
 
-    "quality_correlation_title": "Corrélations numériques",
-    "quality_business_checks_title": "Contrôles métier — dataset présidentiel",
-    "quality_distribution_title": "Distributions et valeurs extrêmes",
     "quality_duplicate_help": "Lignes entièrement dupliquées / clés métier dupliquées.",
     "quality_missingno_caption": "Visualisation des valeurs présentes et manquantes par colonne.",
+    "quality_missingno_plot_captions": [
+      "Matrix plot des valeurs manquantes dans le tableau départemental.",
+      "Fréquence des valeurs présentes par colonne.",
+      "Matrix plot des valeurs manquantes dans le tableau des candidats.",
+      "Fréquence des valeurs présentes par colonne."
+    ],
+    "quality_correlation_title": "Corrélations numériques",
     "quality_correlation_caption": "Les corrélations décrivent des relations linéaires entre variables numériques ; elles ne prouvent pas de causalité.",
-    "quality_check_unique_codes": "Codes départementaux uniques",
-    "quality_check_turnout_chain": "Cohérence inscrits / votants / exprimés",
-    "quality_check_non_negative": "Volumes électoraux non négatifs",
-    "quality_check_vote_sum": "Somme des voix candidates = suffrages exprimés",
-    "quality_check_candidate_count": "Nombre constant de candidats par département",
-    "quality_check_candidate_scores": "Scores candidats non négatifs",
+    "quality_correlation_plot_titles": [
+      "Corrélations - indicateurs départementaux",
+      "Corrélations - résultats candidats"
+    ],
+    "quality_correlation_plot_captions": [
+      "Une forte corrélation positive entre inscrits, votants et suffrages exprimés comme prévu : ces variables décrivent des volumes liés.",
+      "Les corrélations entre voix, pourcentages et rangs doivent être interprétées avec prudence : elles dépendent du format exact des colonnes produites par le parseur."
+    ],
+    "quality_correlation_plot_emptys": [
+      "Aucune colonne numérique exploitable dans le tableau départemental.",
+      "Aucune colonne numérique exploitable dans le tableau des candidats."
+    ],
+    "quality_business_checks_title": "Contrôles métier - dataset présidentiel",
+    "quality_check_unique_codes_label": "Codes départementaux uniques",
+    "quality_check_unique_codes_detail": "code(s) départemental(aux) dupliqué(s)",
+    "quality_check_turnout_chain_label": "Cohérence inscrits / votants / exprimés",
+    "quality_check_turnout_chain_detail": "département(s) concerné(s)",
+    "quality_check_non_negative_label": "Volumes électoraux non négatifs",
+    "quality_check_non_negative_detail": "département(s) concerné(s)",
+    "quality_check_vote_sum_label": "Somme des voix candidates = suffrages exprimés",
+    "quality_check_vote_sum_detail": "département(s) avec un écart supérieur à 1 voix",
+    "quality_check_candidate_count_label": "Nombre constant de candidats par département",
+    "quality_check_candidate_count_detail": "nombre(s) différent(s) de candidats observé(s)",
+    "quality_check_candidate_scores_label": "Scores candidats non négatifs",
+    "quality_check_candidate_scores_detail": "ligne(s) concernée(s)",
+    "quality_check_gap_expander": "Détail : écart entre somme des voix candidates et suffrages exprimés",
+    "quality_check_gap_expander_caption": "Un écart de 0 ou 1 voix peut provenir d’un arrondi dans le fichier source. Un écart important signale en revanche une anomalie potentielle.",
+    "quality_distribution_title": "Distributions et valeurs extrêmes",
+    "quality_distribution_plot_titles": [
+      "Distribution de la participation départementale",
+      "Distribution des voix par candidat"
+    ],
+    "quality_distribution_plot_captions": [
+      "Les territoires d’outre-mer et les Français établis hors de France présentent des participations très différentes de celles de la métropole.",
+      "Les valeurs élevées ne sont pas nécessairement des anomalies : elles reflètent la taille très différente des départements et territoires."
+    ],
 
 
     "story_hook_title": "Pourquoi est-ce important ?",
@@ -247,7 +286,12 @@
       "Analyser les écarts entre le score national et le score départemental de chaque candidat.",
       "Étudier le poids électoral des territoires non cartographiables, notamment les Français établis hors de France.",
       "Compléter l’analyse avec des données socio-démographiques ou économiques par département, en respectant la disponibilité et la licence des données."
-    ]
+    ],
+
+    "territories_without_boundaries": "Territoires sans contour OSM",
+    "election_results": "Résultats électoraux :",
+    "mandatory_attribution": "Attribution obligatoire :",
+    "licenses_and_attribution": "Licences et attribution"
 
 
 
@@ -310,6 +354,7 @@
     "license": "Dataset Presidential election License: the portal displays “License Not Specified”.",
     "filters": "Filters",
     "departments": "Departments",
+    "electoral_departments": "Electoral departments",
     "candidates": "Candidates",
     "empty": "Select at least one department and one candidate.",
     "selected": "Selected scope only — do not interpret as a national total without checking coverage.",
@@ -329,6 +374,7 @@
     "candidate": "Candidate",
     "department": "Department",
     "votes": "Votes",
+    "votes_per_candidate": "Votes per candidate",
     "gap": "1st–2nd gap (points)",
     "charts": [
       "Turnout differs across selected departments",
@@ -394,7 +440,7 @@
     "geo_intro": "Thus, electoral results are enriched with department boundaries from OpenStreetMap to visualise turnout and candidate scores by department.",
     "geo_dataset_title": "French department boundaries from OpenStreetMap - Details:",
     "geo_source": "Geographical source",
-    "geo_license": "Boundary licence",
+    "geo_license": "Boundaries licence",
     "geo_attribution": "© OpenStreetMap contributors under the ODbL licence",
     "geo_reference_date": "Reference date",
     "geo_reference_value": "Boundaries as of 4 January 2018",
@@ -421,11 +467,14 @@
     "map_no_data": "No mappable territory is available for this selection. ",
     "map_missing_shapefile": "The department boundary shapefile could not be found. Maps cannot be displayed.",
     "map_missing_overseas": "Some overseas territories are not included in the shapefile\nand therefore cannot be displayed on the map.",
+
     "geo_quality_title": "Geographical join quality check",
     "geo_quality_ok": "All mappable departments and overseas departments are matched to the OpenStreetMap boundaries.",
     "geo_quality_warning": "Some mappable codes could not be matched to the boundaries.",
     "geo_credit": ["Department boundaries:", "OpenStreetMap via data.gouv.fr", "Version as of 04/01/2018, projection WGS84."],
     "mapped_dep": "Mapped departments",
+    "mappable_dep": "Mappable departments",
+    "absent_mappable_dep": "Mappable departments missing from the boundaries:",
 
     "geo_quality_method": "Join methodology",
     "geo_quality_method_text": ["1. Department codes from the electoral file are normalised.",
@@ -455,18 +504,52 @@
     "geo_non_cart": "The following constituencies appear in the election results\nbut do not have a corresponding departmental polygon in the OpenStreetMap shapefile:",
 
 
-    "quality_correlation_title": "Numerical correlations",
-    "quality_business_checks_title": "Domain checks - presidential dataset",
-    "quality_distribution_title": "Distributions and outliers",
     "quality_duplicate_help": "Fully duplicated rows / duplicated business keys.",
     "quality_missingno_caption": "Visualisation of present and missing values by column.",
+    "quality_missingno_plot_captions": [
+      "Matrix plot of missing values in the departmental table.",
+      "Frequency of values present per column.",
+      "Matrix plot of missing values in the candidates' table.",
+      "Frequency of values present per column."
+    ],
+    "quality_correlation_title": "Numerical correlations",
     "quality_correlation_caption": "Correlations describe linear relationships between numerical variables; they do not prove causality.",
-    "quality_check_unique_codes": "Unique department codes",
-    "quality_check_turnout_chain": "Registered / voters / votes cast consistency",
-    "quality_check_non_negative": "Non-negative electoral volumes",
-    "quality_check_vote_sum": "Candidate votes equal votes cast",
-    "quality_check_candidate_count": "Constant number of candidates per department",
-    "quality_check_candidate_scores": "Non-negative candidate scores",
+    "quality_correlation_plot_titles": [
+      "Correlations - departmental indicators",
+      "Correlations - candidate results"
+    ],
+    "quality_correlation_plot_captions": [
+      "A strong positive correlation exists between the number of registered voters, actual voters, and valid votes cast, as expected: these variables represent interconnected volumes.",
+      "Correlations between vote counts, percentages, and rankings should be interpreted with caution: they depend on the precise format of the columns generated by the parser."
+    ],
+    "quality_correlation_plot_emptys": [
+      "No usable numerical column in the departmental table.",
+      "No usable numerical column in the candidates' table."
+    ],
+    "quality_business_checks_title": "Domain checks - presidential dataset",
+    "quality_check_unique_codes_label": "Unique department codes",
+    "quality_check_unique_codes_detail": "duplicated department code(s)",
+    "quality_check_turnout_chain_label": "Registered / voters / votes cast consistency",
+    "quality_check_turnout_chain_detail": "department(s) concerned",
+    "quality_check_non_negative_label": "Non-negative electoral volumes",
+    "quality_check_non_negative_detail": "department(s) concerned",
+    "quality_check_vote_sum_label": "Candidate votes equal votes cast",
+    "quality_check_vote_sum_detail": "department(s) with a gap of more than 1 vote",
+    "quality_check_candidate_count_label": "Constant number of candidates per department",
+    "quality_check_candidate_count_detail": "different number(s) of candidates observed",
+    "quality_check_candidate_scores_label": "Non-negative candidate scores",
+    "quality_check_candidate_scores_detail": "affected line(s)",
+    "quality_check_gap_expander": "Detail: gap between the sum of votes for candidates and the total number of votes cast",
+    "quality_check_gap_expander_caption": "A gap of 0 or 1 vote may stem from rounding in the source file. A significant gap, however, indicates a potential anomaly.",
+    "quality_distribution_title": "Distributions and outliers",
+    "quality_distribution_plot_titles": [
+      "Distribution of departmental voter turnout",
+      "Distribution of votes by candidate"
+    ],
+    "quality_distribution_plot_captions": [
+      "Overseas territories and French citizens living outside France show participation levels that differ significantly from those in mainland France.",
+      "High values are not necessarily anomalies; they reflect the vast differences in the size of the various departments and territories."
+    ],
 
 
     "story_hook_title": "Why this matters",
@@ -515,7 +598,12 @@
       "Analyse the gap between each candidate’s national score and departmental score.",
       "Study the electoral weight of non-mappable territories, especially French citizens abroad.",
       "Extend the analysis with socio-demographic or economic data by department, while respecting data availability and licensing."
-    ]
+    ],
+
+    "territories_without_boundaries": "Territories without OSM boundaries",
+    "election_results": "Election results:",
+    "mandatory_attribution": "Mandatory attribution:",
+    "licenses_and_attribution": "Licenses and attribution"
 
 
 

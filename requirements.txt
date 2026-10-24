@@ -2,7 +2,6 @@ streamlit
 streamlit-browser-language
 pandas
 numpy
-pyarrow
 plotly
 geopandas # for maps
 missingno
