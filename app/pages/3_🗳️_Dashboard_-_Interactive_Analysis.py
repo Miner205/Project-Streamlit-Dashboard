@@ -6,6 +6,8 @@ import streamlit as st
 from language_detection import detect_browser_language
 from utils.i18n import load_content, normalize_language
 from utils.parser import parse_results
+from utils.geo import department_map, filter_by_territory, load_departements_geo, show_geo_credit, territory_filter
+
 
 
 SOURCE = "https://www.data.gouv.fr/datasets/election-presidentielle-des-10-et-24-avril-2022-resultats-definitifs-du-1er-tour"
@@ -133,7 +135,6 @@ with st.sidebar:
         st.markdown(f':small[[{t["source"]}]({SOURCE})]')
     else:
         st.caption(t["custom_dataset"])
-    st.info(t["custom_file_info"])
 try:
     departments, candidates, report = load_results(st.session_state.get("dataset_bytes"))
 except ValueError as exc:
@@ -145,22 +146,41 @@ except ValueError as exc:
     st.stop()
 
 
+### geo data load
+geo = load_departements_geo()
+
+
+
 st.title(t["dashboard_title"])
 st.markdown(f":small[Dataset {t["source"].lower()}: Election présidentielle des 10 et 24 avril 2022 - Résultats définitifs du 1er tour - par département — [{t["source"]}]({SOURCE}) — License Not Specified]")
+st.divider()
 
 
 ### content of the page
+
+# filters
 with st.sidebar:
     st.header(t["filters"])
-    codes=st.multiselect(t["departments"],departments["code"].tolist(),default=departments["code"].tolist(),format_func=lambda code:code+" · "+departments.set_index("code").loc[code,"department"])
-    names=sorted(candidates["candidate"].unique())
-    chosen=st.multiselect(t["candidates"],names,default=names)
+    territory = territory_filter(f"{t["territory_filter"]}")
+    departments_filtered = filter_by_territory(departments, territory)
+    codes = st.multiselect(
+        t["departments"],
+        departments_filtered["code"].tolist(),
+        default=departments_filtered["code"].tolist(),
+        format_func=lambda code: (
+            code + " - "
+            + departments_filtered.set_index("code").loc[code, "department"]
+        ),
+    )
+    names = sorted(candidates["candidate"].unique())
+    chosen = st.multiselect(t["candidates"], names, default=names)
 if not codes or not chosen:
     st.warning(t["empty"])
     st.stop()
-d=departments[departments["code"].isin(codes)].copy()
-all_c=candidates[candidates["code"].isin(codes)].copy()
-c=all_c[all_c["candidate"].isin(chosen)].copy()
+d = departments[departments["code"].isin(codes)].copy()
+all_c = candidates[candidates["code"].isin(codes)].copy()
+c = all_c[all_c["candidate"].isin(chosen)].copy()
+
 registered=int(d["registered"].sum())
 voters=int(d["voters"].sum())
 valid=int(d["valid"].sum())
@@ -172,21 +192,68 @@ for col,label,value in zip(st.columns(3),t["kpis"],[f"{registered:,}",f"{100*vot
     col.metric(label,value)
 # Candidate filtering never changes turnout or the valid-vote denominator.
 st.caption("Le filtre candidat ne change pas la participation ni le dénominateur des scores." if lang=="fr" else "Candidate selection does not change turnout or vote-share denominators.")
-d["turnout_pct"]=100*d["voters"].div(d["registered"].replace(0,float("nan")))
+d["turnout_pct"] = 100 * d["voters"].div(d["registered"].replace(0, float("nan")))
+
 
 labels={"department":t["department"],"candidate":t["candidate"],"votes":t["votes"],"turnout_pct":t["turnout"],"share":t["score"]}
+
+## participation by dep ; bar chart.
 st.subheader(t["charts"][0])
-st.plotly_chart(px.bar(d.sort_values("turnout_pct"),x="turnout_pct",y="department",orientation="h",labels=labels,height=max(450,22*len(d))),use_container_width=True)
+st.plotly_chart(px.bar(d.sort_values("turnout_pct"),x="turnout_pct",y="department",orientation="h",labels=labels,height=max(450,22*len(d))))
+# geo version:
+st.subheader(f"{t["map_turnout_title"]}")
+participation_map = department_map(t,
+    geo,
+    d[["code", "turnout_pct"]],
+    color_label="Participation (%)",
+    territory=territory,
+    color_scale="Viridis",
+    hover_data={"turnout_pct": ":.2f"},
+)
+if participation_map is not None:
+    st.plotly_chart(participation_map)
+    st.write(f"{t["map_turnout_help"]}")
+
+## scores
 agg=c.groupby("candidate",as_index=False)["votes"].sum()
 agg["share"]=100*agg["votes"]/valid if valid else float("nan")
 st.subheader(t["charts"][1])
-st.plotly_chart(px.bar(agg.sort_values("share"),x="share",y="candidate",orientation="h",hover_data=["votes"],labels=labels),use_container_width=True)
+st.plotly_chart(px.bar(agg.sort_values("share"),x="share",y="candidate",orientation="h",hover_data=["votes"],labels=labels))
+
+## scores matrix
 joined=c.merge(d[["code","valid"]],on="code",validate="many_to_one")
 joined["share"]=100*joined["votes"].div(joined["valid"].replace(0,float("nan")))
 st.subheader(t["charts"][2])
 matrix=joined.pivot(index="department",columns="candidate",values="share")
 fig=px.imshow(matrix,aspect="auto",color_continuous_scale="Blues",labels={"x":t["candidate"],"y":t["department"],"color":t["score"]},height=max(450,22*len(d)))
 fig.update_traces(hovertemplate="%{y}<br>%{x}<br>%{z:.2f} %<extra></extra>")
-st.plotly_chart(fig,use_container_width=True)
-st.info(t["geo"])
+st.plotly_chart(fig)
+# geo version:
+st.subheader(f"{t["map_candidate_title"]}")
+if len(chosen) == 1:
+    selected_candidate = chosen[0]
+    candidate_scores = (
+        joined[joined["candidate"] == selected_candidate]
+        .groupby("code", as_index=False)["share"]
+        .mean()
+    )
+    candidate_map = department_map(t,
+        geo,
+        candidate_scores[["code", "share"]],
+        color_label=f"Score de {selected_candidate} (%)",
+        territory=territory,
+        color_scale="RdYlBu_r",
+        hover_data={"share": ":.2f"},
+    )
+    if candidate_map is not None:
+        st.plotly_chart(candidate_map)
+    st.write(f"{t["map_candidate_help"]}")
+else:
+    st.warning(f"{t["map_candidate_help"]}")
+
+
 st.write(t["conclusions"])
+
+
+### geo credits
+show_geo_credit(t)

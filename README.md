@@ -96,6 +96,70 @@ Livrables finaux : app, ZIP dataset/lien + README + Python, vidéo 2–4 min, UR
 - https://github.com/louisoutin/streamlit-browser-language
 - Portails autorisés : https://www.data.gouv.fr/datasets ; https://gd4h.ecologie.gouv.fr/en/catalogue ; https://data.europa.eu/data/combined?locale=en
 
-## Data
+## Data (main) - élection présidentielle 2022 1er tour
 - source of the used dataset : https://www.data.gouv.fr/datasets/election-presidentielle-des-10-et-24-avril-2022-resultats-definitifs-du-1er-tour
 - cf dataset info on the streamlit app.
+
+
+## Données géographiques
+Le dashboard utilise les **contours des départements français issus d’OpenStreetMap**, 
+publiés sur data.gouv.fr :
+https://www.data.gouv.fr/datasets/contours-des-departements-francais-issus-d-openstreetmap
+
+### Licence et attribution
+Les contours proviennent d’OpenStreetMap et sont diffusés sous licence 
+**Open Data Commons Open Database License (ODbL)**.  
+L’attribution suivante doit être conservée :
+> © les contributeurs d’OpenStreetMap sous licence ODbL
+Source :  
+https://www.data.gouv.fr/datasets/contours-des-departements-francais-issus-d-openstreetmap
+
+### Fichiers utilisés
+```text
+data/departements-20180101-shp/
+├── departements-20180101.shp
+├── departements-20180101.shx
+├── departements-20180101.dbf
+├── departements-20180101.prj
+├── departements-20180101.cpg
+└── departements-descriptif.txt
+```
+
+### Description
+- **Date de référence :** 04/01/2018.
+- **Niveau géographique :** département.
+- **Système de coordonnées :** WGS84.
+- **Couverture :** France métropolitaine, Guadeloupe, Martinique, Guyane, La Réunion et Mayotte.
+- **Attributs utilisés :** `code_insee`, `nom`, `nuts3`, `wikidata` et `surf_km2`.
+- **Jointure :** `code_insee` du shapefile avec le code département du fichier des résultats de la présidentielle 2022.
+
+### Compatibilité avec les élections de 2022
+Les contours datent de 2018, tandis que les résultats électoraux datent de 2022.  
+Cette différence n’est pas problématique ici, car l’analyse est réalisée au niveau 
+départemental et les codes départementaux utilisés pour la jointure restent compatibles.
+
+### Filtre territorial
+Une sidebar permet de choisir le territoire affiché :
+- Toutes circonscriptions
+- France métropolitaine
+- Corse
+- DOM-TOM
+- Guadeloupe
+- Martinique
+- Guyane
+- La Réunion
+- Mayotte
+
+### Cartes proposées
+- Carte de la participation par département.
+- Carte du score départemental d’un candidat sélectionné.
+- Contrôle visuel de la couverture géographique et de la jointure des codes INSEE.
+
+###
+territoires sans contours départementaux dans le shapefile (ZN, ZP, ZS, ZW, ZX, ZZ):
+"ZN": "Nouvelle-Calédonie",
+"ZP": "Polynésie française",
+"ZS": "Saint-Pierre-et-Miquelon",
+"ZW": "Wallis-et-Futuna",
+"ZX": "Saint-Martin / Saint-Barthélemy",
+"ZZ": "Français établis hors de France".

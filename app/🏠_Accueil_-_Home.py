@@ -5,6 +5,7 @@ import streamlit as st
 from language_detection import detect_browser_language
 from utils.i18n import load_content, normalize_language
 
+
 st.set_page_config(page_title="Data Storytelling Dashboard", page_icon="📊", layout="wide")
 
 with st.sidebar:

@@ -1,11 +1,11 @@
 from pathlib import Path
 import logging
 import pandas as pd
-import plotly.express as px
 import streamlit as st
 from language_detection import detect_browser_language
 from utils.i18n import load_content, normalize_language
 from utils.parser import parse_results
+from utils.geo import GEO_SOURCE, GEO_ATTRIBUTION, filter_by_territory, load_departements_geo, show_geo_credit, territory_filter, ELECTION_TO_INSEE, NON_CARTOGRAPHIABLE
 
 
 SOURCE = "https://www.data.gouv.fr/datasets/election-presidentielle-des-10-et-24-avril-2022-resultats-definitifs-du-1er-tour"
@@ -133,7 +133,6 @@ with st.sidebar:
         st.markdown(f':small[[{t["source"]}]({SOURCE})]')
     else:
         st.caption(t["custom_dataset"])
-    st.info(t["custom_file_info"])
 try:
     departments, candidates, report = load_results(st.session_state.get("dataset_bytes"))
 except ValueError as exc:
@@ -145,8 +144,14 @@ except ValueError as exc:
     st.stop()
 
 
+### geo data load
+geo = load_departements_geo()
+
+
+
 st.title(t["dashboard_title"])
 st.markdown(f":small[Dataset {t["source"].lower()}: Election présidentielle des 10 et 24 avril 2022 - Résultats définitifs du 1er tour - par département — [{t["source"]}]({SOURCE}) — License Not Specified]")
+st.divider()
 
 
 ### content of the page
@@ -166,6 +171,96 @@ if report["issues"]:
             st.write(issue)
 else:
     st.success(t["quality_ok"])
-st.warning(t["license"])
-st.info(t["geo"])
-st.write(t["conclusions"])
+st.caption(t["license"])
+
+st.divider()
+
+
+### geo
+st.subheader("Contrôle de la jointure géographique")
+
+if geo is None:
+    st.error(f"{t["map_missing_shapefile"]}")
+else:
+    election_codes = set(departments["code"].astype(str).str.upper())
+    geo_codes = set(geo["geo_code"])
+    mapped_codes = {
+        ELECTION_TO_INSEE.get(code, code)
+        for code in election_codes
+        if code not in NON_CARTOGRAPHIABLE
+    }
+
+    missing_in_geo = sorted(mapped_codes - geo_codes)
+    non_mapped = sorted(election_codes & NON_CARTOGRAPHIABLE.keys())
+
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Départements électoraux", len(election_codes))
+    col2.metric("Départements cartographiables", len(mapped_codes))
+    col3.metric("Territoires sans contour OSM", len(non_mapped))
+
+    if missing_in_geo:
+        st.warning(
+            "Départements cartographiables absents des contours : "
+            + ", ".join(missing_in_geo)
+        )
+    else:
+        st.success(
+            "Tous les départements et DOM cartographiables sont appariés aux contours OSM."
+        )
+
+    with st.expander(t["geo_quality_method"], expanded=False):
+        for text in t["geo_quality_method_text"]:
+            st.markdown(text)
+        st.markdown(
+            f"""
+            **{t["geo_overseas_mapping"]}**\n
+            {t["geo_overseas_mapping_text"]}\n
+            **{t["geo_non_cartographic"]}**\n
+            {t["geo_non_cartographic_text"]}\n
+            """
+        )
+        mapping_df = pd.DataFrame(
+            [
+                {
+                    "Code électoral 2022": election_code,
+                    "Code INSEE / OSM": insee_code,
+                    "Territoire": territory_name,
+                }
+                for election_code, insee_code in ELECTION_TO_INSEE.items()
+                for territory_name in [
+                "Guadeloupe" if election_code == "ZA"
+                else "Martinique" if election_code == "ZB"
+                else "Guyane" if election_code == "ZC"
+                else "La Réunion" if election_code == "ZD"
+                else "Mayotte"]
+            ]
+        )
+        st.dataframe(
+            mapping_df,
+            use_container_width=True,
+            hide_index=True,
+        )
+
+    with st.expander("Territoires non cartographiables", expanded=False):
+        st.markdown(
+            f"""
+            {t["geo_non_cart"]}
+            - `ZN` — Nouvelle-Calédonie  
+            - `ZP` — Polynésie française  
+            - `ZS` — Saint-Pierre-et-Miquelon  
+            - `ZW` — Wallis-et-Futuna  
+            - `ZX` — Saint-Martin / Saint-Barthélemy  
+            - `ZZ` — Français établis hors de France  
+            {t["non_cartographic_warning"]}
+            """
+        )
+st.subheader("Licences et attribution")
+st.markdown(
+    f"""
+    - **Résultats électoraux :** [data.gouv.fr]({SOURCE}).
+    - **Contours départementaux :** [OpenStreetMap via data.gouv.fr]({GEO_SOURCE}).
+    - **Attribution obligatoire :** {GEO_ATTRIBUTION}.
+    - **Licence des contours :** ODbL, avec partage à l’identique.
+    """
+)
+show_geo_credit(t)

@@ -5,5 +5,5 @@ numpy
 pyarrow
 plotly
 altair
-geopandas  # if using maps
+geopandas # for maps
 pydeck      # optional map layer

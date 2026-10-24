@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+
 CONTENT_PATH = Path("app/utils/content.json")
 
 def load_content():

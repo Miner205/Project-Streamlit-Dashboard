@@ -2,6 +2,7 @@ import csv
 import io
 from collections import Counter
 
+
 COUNTS = {"registered": 3, "abstentions": 4, "voters": 6, "blank": 8, "invalid": 11, "valid": 14}
 RATES = {5: ("abstentions", "registered"), 7: ("voters", "registered"), 9: ("blank", "registered"), 10: ("blank", "voters"), 12: ("invalid", "registered"), 13: ("invalid", "voters"), 15: ("valid", "registered"), 16: ("valid", "voters")}
 

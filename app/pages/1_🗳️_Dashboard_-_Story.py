@@ -1,11 +1,11 @@
 from pathlib import Path
 import logging
 import pandas as pd
-import plotly.express as px
 import streamlit as st
 from language_detection import detect_browser_language
 from utils.i18n import load_content, normalize_language
 from utils.parser import parse_results
+from utils.geo import GEO_SOURCE, load_departements_geo, show_geo_credit, ELECTION_TO_INSEE
 
 
 SOURCE = "https://www.data.gouv.fr/datasets/election-presidentielle-des-10-et-24-avril-2022-resultats-definitifs-du-1er-tour"
@@ -133,7 +133,6 @@ with st.sidebar:
         st.markdown(f':small[[{t["source"]}]({SOURCE})]')
     else:
         st.caption(t["custom_dataset"])
-    st.info(t["custom_file_info"])
 try:
     departments, candidates, report = load_results(st.session_state.get("dataset_bytes"))
 except ValueError as exc:
@@ -147,11 +146,12 @@ except ValueError as exc:
 
 st.title(t["dashboard_title"])
 st.markdown(f":small[Dataset {t["source"].lower()}: Election présidentielle des 10 et 24 avril 2022 - Résultats définitifs du 1er tour - par département — [{t["source"]}]({SOURCE}) — License Not Specified]")
+st.divider()
 
 
 ### content of the page
 st.header(t["story_title"])
-st.write(t["my_question"])
+st.markdown(f"**{t["my_question"]}**")
 st.write(t["audience"])
 st.write(t["takeaways"])
 for item in t["story"]:
@@ -160,8 +160,77 @@ for item in t["story"]:
 if st.session_state["dataset_source"] != "custom source":
     st.caption(t["default_dataset"])
     st.markdown(f':small[[{t["source"]}]({SOURCE})]')
+    st.info(t["custom_file_info"])
 else:
     st.caption(t["custom_dataset"])
 
-st.warning(t["license"])
-st.info(t["geo"])
+
+st.caption(t["license"])
+
+
+
+
+### geo
+st.subheader(t["geo_title"])
+st.write(t["geo"])
+st.write(t["geo_intro"])
+
+geo = load_departements_geo()
+
+if geo is None:
+    st.warning(f"{t["map_missing_shapefile"]}")
+else:
+    col1, col2, col3 = st.columns([2, 3, 3])
+    col1.metric(f"{t['mapped_dep']}", len(geo))
+    col2.metric(f"{t['geo_reference_date']}", f"{t['geo_reference_value']}")
+    col3.metric(f"{t['geo_projection']}", f"{t['geo_projection_value']}")
+
+    with st.expander(t["geo_dataset_title"], expanded=False):
+        st.markdown(f"- **{t['geo_source']} :** [data.gouv.fr]({GEO_SOURCE})")
+        st.markdown(f"- **{t['geo_reference_date']} :** {t['geo_reference_value']}")
+        st.markdown(f"- **{t['geo_projection']} :** {t['geo_projection_value']}")
+        st.markdown(f"- **{t['geo_join_key']} :** {t['geo_join_value']}")
+        st.markdown(f"- **{t['geo_attributes']} :** {t['geo_attributes_value']}")
+        st.markdown(f"- **{t['geo_coverage']} :** {t['geo_coverage_value']}")
+        st.markdown(f"- **{t['geo_license']} :** ODbL — {t['geo_attribution']}")
+
+        st.info(t["geo_compatibility_text"])
+        st.warning(t["geo_overseas_mapping_text"])
+
+        ## geo tableau:
+        geo_table = geo.drop(columns="geometry", errors="ignore").copy()
+        # Ajout du code électoral correspondant, lorsque la correspondance existe.
+        insee_to_election = {v: k for k, v in ELECTION_TO_INSEE.items()}
+        geo_table["election_code"] = geo_table["geo_code"].map(insee_to_election)
+        # Les départements métropolitains et la Corse gardent le même code.
+        geo_table["election_code"] = geo_table["election_code"].fillna(
+            geo_table["geo_code"]
+        )
+        geo_table = geo_table.rename(
+            columns={
+                "geo_code": "Code INSEE / OSM",
+                "election_code": "Code électoral 2022",
+                "department": "Département",
+                "nuts3": "NUTS3",
+                "wikidata": "Wikidata",
+                "area_km2": "Surface (km²)",
+            }
+        )
+        # Colonnes optionnelles : on ne garde que celles réellement disponibles.
+        possible_columns = [
+            "Code électoral 2022",
+            "Code INSEE / OSM",
+            "Département",
+            "NUTS3",
+            "Wikidata",
+            "Surface (km²)",
+        ]
+        available_columns = [
+            col for col in possible_columns if col in geo_table.columns
+        ]
+        st.dataframe(
+            geo_table[available_columns],
+            hide_index=True,)
+        #todo: why is the fucking col "Wikidata" disappearing ?? (it was working fine before putting the 2 codes) - eh whatever..."
+
+show_geo_credit(t)
