@@ -270,7 +270,6 @@ else:
                 "turnout_pct": "Participation (%)",
             }
         ),
-        use_container_width=True,
         hide_index=True,
     )
 
@@ -290,7 +289,6 @@ else:
             labels=labels,
             text="turnout_pct",
         ).update_traces(texttemplate="%{text:.2f} %", textposition="outside"),
-        use_container_width=True,
     )
 
     st.subheader(t["non_cartographic_votes_title"])
@@ -303,7 +301,6 @@ else:
             labels=labels,
             text="valid",
         ).update_traces(texttemplate="%{text:,}", textposition="outside"),
-        use_container_width=True,
     )
 
     st.subheader(t["non_cartographic_candidate_title"])
@@ -339,7 +336,6 @@ else:
             },
             text="share",
         ).update_traces(texttemplate="%{text:.2f} %", textposition="outside"),
-        use_container_width=True,
     )
 
 

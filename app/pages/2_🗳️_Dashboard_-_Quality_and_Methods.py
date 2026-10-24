@@ -456,7 +456,6 @@ with st.expander("Détail : écart entre somme des voix candidates et suffrages 
         ]
         .sort_values("vote_gap", key=abs, ascending=False)
         .head(30),
-        use_container_width=True,
         hide_index=True,
     )
     st.caption(
@@ -485,7 +484,7 @@ with tab_turnout:
         labels={"turnout_pct": "Participation (%)", "count": "Nombre de départements"},
     )
     fig_turnout.update_layout(height=450)
-    st.plotly_chart(fig_turnout, use_container_width=True)
+    st.plotly_chart(fig_turnout)
 
     st.caption(
         "Les territoires d’outre-mer et les Français établis hors de France peuvent "
@@ -501,7 +500,7 @@ with tab_votes:
         labels={"candidate": "Candidat", "votes": "Voix"},
     )
     fig_votes.update_layout(height=550, xaxis_tickangle=-45)
-    st.plotly_chart(fig_votes, use_container_width=True)
+    st.plotly_chart(fig_votes)
 
     st.caption(
         "Les valeurs élevées ne sont pas nécessairement des anomalies : elles "
@@ -579,7 +578,6 @@ else:
         )
         st.dataframe(
             mapping_df,
-            use_container_width=True,
             hide_index=True,
         )
 

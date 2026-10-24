@@ -2,26 +2,36 @@
 Data Storytelling Dashboard
 Arthur Donnat
 
-Navigation : accueil et consignes, histoire, EDA, analyse interactive, qualité et méthodes.
+# Github link :
+https://github.com/Miner205/Project-Streamlit-Dashboard
 
+# Deployed App link :
+https://project-app-dashboard-arthur.streamlit.app/
+
+
+## random infos:
+Navigation :
+- accueil et consignes,
+- dahsboard :
+  - histoire,
+  - qualité et méthodes,
+  - EDA,
+  - analyse interactive.
 
 Dans la barre latérale, charger le TXT départemental complet. Le calcul est local au processus Streamlit ; sur un hébergement distant, l’upload transfère le fichier au serveur. `st.cache_data` conserve les tables traitées en cache du processus : ne pas y envoyer de fichiers confidentiels.
 
 
-
-## Limites actuelles
-
-- Le fichier intégral de l’utilisateur n’était pas disponible lors de la génération. Aucune conclusion nationale n’a été calculée.
+## Limites actuelles :
 - Pas de série temporelle : un seul tour de 2022.
-- Carte non implémentée. Les codes départementaux sont géographiques : une carte reste nécessaire pour la conformité finale. Il faudra un fond compatible avec les codes et la couverture réelle, documenter sa source/licence et auditer les codes non joints.
-- Pas encore de storyboard final, de rapport, de vidéo ni de déploiement. Les trois graphiques constituent une première exploration, pas une histoire finalisée.
-- La fiche data.gouv consultée affiche « License Not Specified ». Clarifier la licence de la ressource avant redistribution. La licence générale du site ne suffit pas.
-- `detect_browser_language()` est intégré avec choix manuel prioritaire et repli FR. L’installation et le rendu de ce composant tiers doivent être testés dans un vrai navigateur. Sa version n’a pas été vérifiée, elle n’est donc pas inventée ni figée.
-
+- La fiche data.gouv consultée affiche « License Not Specified » (pour le dataset élection présidentielle).
+- some translation in EN missing in dashboard quality.
+- etc.
 
 
 ## requirements :
 Python 3.13 (Conda used)
+requirement.txt
+
 
 ## To run the web app :
 - In pycharm terminal, run the command "streamlit run app/🏠_Accueil_-_Home.py" in the project folder.
@@ -35,7 +45,7 @@ OR you can also create a new pycharm run configuration to run it using :
 - and with parameters 'run app/🏠_Accueil_-_Home.py'
 
 
-## Format particulier du fichier
+## Format particulier du dataset élection présidentielle:
 
 17 colonnes départementales, suivies de N blocs candidat à 6 champs : sexe, nom, prénom, voix, % voix/inscrits, % voix/exprimés. L’en-tête peut ne nommer que le premier bloc. Le parseur n’utilise donc pas directement `pd.read_csv` avec cet en-tête.
 
@@ -48,26 +58,13 @@ OR you can also create a new pycharm run configuration to run it using :
 - Le filtre candidat ne modifie ni la participation ni le dénominateur exprimés.
 - Contrôles des identités comptables, sommes des voix, cohérence des candidats et pourcentages publiés (tolérance 0,02 point).
 
-Les anomalies comptables sont signalées sans bloquer les vues ; les erreurs structurelles bloquent l’import. Le périmètre national n’est pas présumé. Les colonnes techniques des tableaux et les diagnostics du parseur ne sont pas entièrement traduits.
-
-
-
 
 ## Langues
 
-L’application importe `from language_detection import detect_browser_language` et appelle le composant sans argument à chaque exécution. Un retour initial vide utilise temporairement l'anglais. Les locales fr-* et en-* sont normalisées. Le sélecteur manuel est prioritaire.
+L’application importe `from language_detection import detect_browser_language` et appelle le composant sans argument à chaque exécution.
+Un retour initial vide utilise temporairement l'anglais.
+Les locales fr-* et en-* sont normalisées. Le sélecteur manuel est prioritaire.
 
-Le composant tiers nécessite une validation dans un vrai navigateur : accès au navigateur, rendu de son iframe et retour asynchrone. Une exception de détection produit un avertissement et laisse le sélecteur utilisable. Une dépendance absente fait échouer le démarrage : installer requirements.txt au préalable.
-
-## Tests
-
-```bash
-python -m unittest discover -s tests -v
-```
-
-Tests unitaires : normalisation des locales, parité des clés FR/EN, total du barème et taille des checklists. Ils ne remplacent pas un test de l’application et du composant dans un navigateur.
-
-Validation manuelle : navigateur français puis anglais, autre langue, changement manuel de langue, changement de langue après sélection des cases, largeur mobile, lisibilité, liens. Les compteurs d’accueil sont des objectifs pédagogiques, pas des KPI analytiques.
 
 ## Structure
 
@@ -163,8 +160,3 @@ territoires sans contours départementaux dans le shapefile (ZN, ZP, ZS, ZW, ZX,
 "ZW": "Wallis-et-Futuna",
 "ZX": "Saint-Martin / Saint-Barthélemy",
 "ZZ": "Français établis hors de France".
-
-
-## TODO // Limitations:
-- some translation in EN missing in dashboard quality.
-- etc.
