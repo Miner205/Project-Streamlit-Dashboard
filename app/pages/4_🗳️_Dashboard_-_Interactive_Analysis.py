@@ -47,7 +47,6 @@ with st.sidebar:
     choice = st.selectbox("Langue / Language", ["auto", "fr", "en"],
         format_func=lambda x: {"auto": "Automatique / Automatic", "fr": "Français", "en": "English"}[x],
         key="_language_mode_widget", on_change=save_language_mode)
-    st.divider()
 mode = st.session_state["language_mode"]
 lang = (
     st.session_state.get("app_detected_language", "en")
@@ -131,7 +130,6 @@ if st.session_state.get("dataset_bytes") is None:
     st.session_state["dataset_source"] = SOURCE
 with st.sidebar:
     if st.session_state["dataset_source"] != "custom source":
-        st.caption(t["default_dataset"])
         st.markdown(f':small[[{t["source"]}]({SOURCE})]')
     else:
         st.caption(t["custom_dataset"])

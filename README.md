@@ -31,10 +31,12 @@ Navigation :
 Dans la barre latérale, charger le TXT départemental complet. Le calcul est local au processus Streamlit ; sur un hébergement distant, l’upload transfère le fichier au serveur. `st.cache_data` conserve les tables traitées en cache du processus : ne pas y envoyer de fichiers confidentiels.
 
 
-## Limites actuelles :
+## Limites actuelles & TODO :
 - Pas de série temporelle : un seul tour de 2022.
 - La fiche data.gouv consultée affiche « License Not Specified » (pour le dataset élection présidentielle).
 - some translation in EN missing in dashboard quality.
+- try to use libraries : altair, pydeck(optional map layer), etc.
+- in sidebar try to put filters above optional upload file.
 - etc.
 
 
