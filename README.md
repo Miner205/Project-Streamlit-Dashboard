@@ -40,6 +40,7 @@ report : no real report provided, since there is already a lot of info in the RE
 - some translation in EN missing in dashboard quality.
 - try to use libraries : altair, pydeck(optional map layer), etc.
 - in sidebar try to put filters above optional upload file.
+- droite/gauche (quels départements vote plus à droite ou à gauche etc)
 - etc.
 
 
