@@ -28,9 +28,9 @@
     "story_title": "Un scrutin national, des contrastes départementaux",
     "my_question": "Question directrice : comment la participation et la répartition des suffrages diffèrent-elles entre départements au premier tour de 2022 ?",
     "audience": "Public : lecteurs souhaitant comprendre les contrastes territoriaux du scrutin, sans inférer les comportements individuels.",
-    "takeaways": "Points clés :",
+    "other_points": "Autres points :",
     "story": [
-      "Contexte : un seul scrutin et un seul tour. Ce fichier ne permet pas d’étudier une évolution temporelle.",
+      "Dataset : Un seul scrutin et un seul tour. Ce fichier ne permet pas d’étudier une évolution temporelle.",
       "Explorer d’abord la participation, les bulletins blancs et nuls, puis les scores des candidats.",
       "Comparer des taux pondérés par les effectifs, et distinguer les voix rapportées aux exprimés des voix rapportées aux inscrits.",
       "Les différences territoriales sont descriptives : aucune causalité démographique, sociale ou politique n’est établie ici."
@@ -197,7 +197,57 @@
     "quality_check_non_negative": "Volumes électoraux non négatifs",
     "quality_check_vote_sum": "Somme des voix candidates = suffrages exprimés",
     "quality_check_candidate_count": "Nombre constant de candidats par département",
-    "quality_check_candidate_scores": "Scores candidats non négatifs"
+    "quality_check_candidate_scores": "Scores candidats non négatifs",
+
+
+    "story_hook_title": "Pourquoi est-ce important ?",
+    "story_hook": "Le premier tour de l’élection présidentielle de 2022 révèle de fortes différences territoriales : participation, poids des candidats et résultats départementaux varient nettement entre la France métropolitaine, les outre-mer et les Français établis hors de France. Comprendre ces écarts permet de lire le vote au-delà du résultat national agrégé.",
+    "story_context_title": "Contexte",
+    "story_context": "Ce dashboard analyse les résultats définitifs du premier tour de l’élection présidentielle des 10 et 24 avril 2022, publiés par département. Il s’adresse aux étudiants, analystes de données, journalistes et citoyens souhaitant explorer la géographie du vote à partir de données publiques.",
+    "story_dataset_context_title": "Données et périmètre",
+    "story_dataset_context": "Le jeu de données principal contient, pour chaque département ou circonscription, le nombre d’inscrits, de votants, de suffrages exprimés ainsi que les voix obtenues par chaque candidate ou candidat. Les résultats sont enrichis de contours départementaux issus d’OpenStreetMap pour produire des cartes. Les territoires sans contour départemental restent inclus dans les analyses chiffrées, mais sont exclus des cartes.",
+    "story_insights_title": "Enseignements clés",
+    "story_key_insights": [
+      {
+        "title": "La participation n’est pas homogène sur le territoire",
+        "text": "La comparaison des départements montre que la participation dépend fortement du territoire. Les écarts entre métropole, outre-mer et Français établis hors de France sont suffisamment importants pour influencer la lecture du résultat national.",
+        "details": [
+          "La carte de participation permet de repérer les départements les plus mobilisés.",
+          "Les filtres territoriaux permettent d’isoler la France métropolitaine, la Corse, les outre-mer cartographiables ou un territoire précis.",
+          "La participation doit toujours être calculée à partir des inscrits, indépendamment du candidat sélectionné."
+        ]
+      },
+      {
+        "title": "Les scores candidats varient fortement selon les départements",
+        "text": "Un candidat peut obtenir un score national modéré tout en étant particulièrement fort dans certains territoires. La carte départementale et la matrice de scores permettent d’identifier ces zones de force et de faiblesse.",
+        "details": [
+          "Le score est calculé comme la part du candidat dans les suffrages exprimés.",
+          "La sélection d’un seul candidat affiche sa répartition géographique.",
+          "Les résultats doivent être lus en pourcentage plutôt qu’en nombre brut de voix, afin de comparer des territoires de tailles très différentes."
+        ]
+      },
+      {
+        "title": "Les outre-mer demandent une lecture spécifique",
+        "text": "Les codes ZA, ZB, ZC, ZD et ZM correspondent respectivement à la Guadeloupe, la Martinique, la Guyane, La Réunion et Mayotte. Ils sont convertis vers les codes INSEE 971, 972, 973, 974 et 976 pour la jointure avec les contours OpenStreetMap.",
+        "details": [
+          "Ces territoires sont cartographiables après conversion des codes.",
+          "La Nouvelle-Calédonie, la Polynésie française, Saint-Pierre-et-Miquelon, Wallis-et-Futuna, Saint-Martin/Saint-Barthélemy et les Français établis hors de France n’ont pas de contour départemental dans le shapefile.",
+          "Ils restent néanmoins pris en compte dans les tableaux, les indicateurs et les analyses de poids électoral."
+        ]
+      }
+    ],
+    "story_insight_details": "Points de lecture",
+    "story_implications_title": "Implications",
+    "story_implications": "Les résultats nationaux masquent une forte hétérogénéité territoriale. Une analyse uniquement aggregée peut donc donner une image incomplète du vote : il est nécessaire de croiser participation, scores candidats et contexte géographique pour interpréter correctement le premier tour.",
+    "story_next_steps_title": "Prochaines étapes d’analyse",
+    "story_next_steps": [
+      "Comparer la participation métropolitaine avec celle des territoires d’outre-mer.",
+      "Identifier les départements où chaque candidat dépasse un seuil donné, par exemple 20 % ou 30 % des suffrages exprimés.",
+      "Analyser les écarts entre le score national et le score départemental de chaque candidat.",
+      "Étudier le poids électoral des territoires non cartographiables, notamment les Français établis hors de France.",
+      "Compléter l’analyse avec des données socio-démographiques ou économiques par département, en respectant la disponibilité et la licence des données."
+    ]
+
 
 
 
@@ -247,9 +297,9 @@
     "story_title": "One national election, contrasting departments",
     "my_question": "Main question: how do turnout and candidate vote shares differ across departments in the first round of 2022?",
     "audience": "Audience: readers seeking to understand territorial contrasts without inferring individual behavior.",
-    "takeaways": "Takeaways:",
+    "other_points": "Other points:",
     "story": [
-      "Context: one election and one round. This file cannot support time-trend analysis.",
+      "Dataset: One election and one round. This file cannot support time-trend analysis.",
       "Explore turnout, blank and invalid ballots, then candidate scores.",
       "Compare count-weighted rates and distinguish shares of valid votes from shares of registered voters.",
       "Territorial differences are descriptive: no demographic, social or political causation is established here."
@@ -414,7 +464,57 @@
     "quality_check_non_negative": "Non-negative electoral volumes",
     "quality_check_vote_sum": "Candidate votes equal votes cast",
     "quality_check_candidate_count": "Constant number of candidates per department",
-    "quality_check_candidate_scores": "Non-negative candidate scores"
+    "quality_check_candidate_scores": "Non-negative candidate scores",
+
+
+    "story_hook_title": "Why this matters",
+    "story_hook": "The first round of the 2022 French presidential election reveals strong territorial differences: turnout, candidate weight and departmental results vary considerably between metropolitan France, overseas territories and French citizens abroad. Understanding these gaps makes it possible to read the vote beyond the national aggregate result.",
+    "story_context_title": "Context",
+    "story_context": "This dashboard analyses the definitive results of the first round of the presidential election held on 10 and 24 April 2022, published by department. It is intended for students, data analysts, journalists and citizens who want to explore the geography of voting using public data.",
+    "story_dataset_context_title": "Data and scope",
+    "story_dataset_context": "The main dataset contains, for each department or constituency, the number of registered voters, voters, votes cast and votes received by each candidate. The results are enriched with department boundaries from OpenStreetMap to create maps. Territories without a department boundary remain included in the numerical analyses but are excluded from the maps.",
+    "story_insights_title": "Key insights",
+    "story_key_insights": [
+      {
+        "title": "Turnout is not uniform across the territory",
+        "text": "Comparing departments shows that turnout depends strongly on location. The gaps between metropolitan France, overseas territories and French citizens abroad are large enough to influence the interpretation of the national result.",
+        "details": [
+          "The turnout map helps identify the most mobilised departments.",
+          "Territory filters make it possible to isolate metropolitan France, Corsica, mappable overseas territories or a specific territory.",
+          "Turnout must always be calculated from registered voters, independently of the selected candidate."
+        ]
+      },
+      {
+        "title": "Candidate scores vary strongly by department",
+        "text": "A candidate may obtain a moderate national score while performing particularly well in certain territories. The departmental map and score matrix help identify these areas of strength and weakness.",
+        "details": [
+          "A candidate’s score is calculated as their share of votes cast.",
+          "Selecting one candidate displays their geographical distribution.",
+          "Results should be read as percentages rather than raw vote counts, so that territories of very different sizes can be compared."
+        ]
+      },
+      {
+        "title": "Overseas territories require a specific reading",
+        "text": "Codes ZA, ZB, ZC, ZD and ZM correspond respectively to Guadeloupe, Martinique, French Guiana, Réunion and Mayotte. They are converted to INSEE codes 971, 972, 973, 974 and 976 for the join with OpenStreetMap boundaries.",
+        "details": [
+          "These territories become mappable after code conversion.",
+          "New Caledonia, French Polynesia, Saint Pierre and Miquelon, Wallis and Futuna, Saint Martin/Saint Barthélemy and French citizens abroad have no department boundary in the shapefile.",
+          "They are nevertheless included in the tables, indicators and electoral-weight analyses."
+        ]
+      }
+    ],
+    "story_insight_details": "Reading points",
+    "story_implications_title": "Implications",
+    "story_implications": "National results hide substantial territorial heterogeneity. An aggregate-only analysis can therefore provide an incomplete picture of the vote: turnout, candidate scores and geographical context must be combined to interpret the first round correctly.",
+    "story_next_steps_title": "Next analytical steps",
+    "story_next_steps": [
+      "Compare metropolitan turnout with turnout in overseas territories.",
+      "Identify departments where each candidate exceeds a given threshold, such as 20% or 30% of votes cast.",
+      "Analyse the gap between each candidate’s national score and departmental score.",
+      "Study the electoral weight of non-mappable territories, especially French citizens abroad.",
+      "Extend the analysis with socio-demographic or economic data by department, while respecting data availability and licensing."
+    ]
+
 
 
   }

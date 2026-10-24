@@ -31,6 +31,9 @@ Navigation :
 Dans la barre latérale, charger le TXT départemental complet. Le calcul est local au processus Streamlit ; sur un hébergement distant, l’upload transfère le fichier au serveur. `st.cache_data` conserve les tables traitées en cache du processus : ne pas y envoyer de fichiers confidentiels.
 
 
+report : no real report provided, since there is already a lot of info in the README, App, Dashboard Story, Video, etc.
+
+
 ## Limites actuelles & TODO :
 - Pas de série temporelle : un seul tour de 2022.
 - La fiche data.gouv consultée affiche « License Not Specified » (pour le dataset élection présidentielle).
@@ -111,7 +114,7 @@ Project Streamlit Dashboard/
 ├── IndividualStudentPRJ_ Data StorytellingDashbo…
 ├── README.md
 └── requirements.txt
-+ Video + report + autres potentiellement.
++ Video
 
 
 ## Références

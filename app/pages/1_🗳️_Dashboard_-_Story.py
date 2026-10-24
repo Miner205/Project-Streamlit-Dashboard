@@ -150,10 +150,49 @@ st.divider()
 
 
 ### content of the page
+
+## Storytelling structure
 st.header(t["story_title"])
-st.markdown(f"**{t["my_question"]}**")
-st.write(t["audience"])
-st.write(t["takeaways"])
+
+# Hook
+with st.container(border=True):
+    st.subheader(t["story_hook_title"])
+    st.markdown(f"### {t['my_question']}")
+    st.write(t["story_hook"])
+
+# Context
+with st.container(border=True):
+    st.subheader(t["story_context_title"])
+    st.write(t["audience"])
+    st.write(t["story_context"])
+
+    with st.expander(t["story_dataset_context_title"], expanded=False):
+        st.markdown(t["story_dataset_context"])
+
+# Key insights
+st.subheader(t["story_insights_title"])
+
+for insight in t["story_key_insights"]:
+    with st.container(border=True):
+        st.markdown(f"#### {insight['title']}")
+        st.write(insight["text"])
+
+        if insight.get("details"):
+            with st.expander(t["story_insight_details"]):
+                for detail in insight["details"]:
+                    st.markdown(f"- {detail}")
+
+# Implications / next steps
+with st.container(border=True):
+    st.subheader(t["story_implications_title"])
+    st.write(t["story_implications"])
+
+    st.markdown(f"**{t['story_next_steps_title']}**")
+    for step in t["story_next_steps"]:
+        st.markdown(f"- {step}")
+
+
+st.write(t["other_points"])
 for item in t["story"]:
     st.markdown(f"- {item}")
 
